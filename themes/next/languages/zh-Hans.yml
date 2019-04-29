@@ -4,7 +4,7 @@ title:
   tag: 标签
   schedule: 日程表
 
-author: 博主
+author: 几岁老人
 
 menu:
   home: 首页
@@ -46,7 +46,7 @@ page:
   tags: 标签
 
 footer:
-  powered: "由 %s 强力驱动"
+  powered: "%s"
   theme: 主题
 
 counter:
