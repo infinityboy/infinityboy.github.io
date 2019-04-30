@@ -83,4 +83,3 @@ deploy:
     type: git
     repository: https://github.com/infinityboy/infinityboy.github.io
     branch: master
-
