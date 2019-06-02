@@ -24,11 +24,89 @@ categories:
 
 ### 登录/注销，Token验证及存储实现思路
 
-未完待续。。。
+一般登陆的时候，像后端发送请求，后端会返回token令牌，然后前端将token存存储到localstorage当中(这样方便在登陆之前下获取一次本地token当本地token有效时，直接根据token像后端请求权限路由)。并且在登陆之前还会先有一个全局验证的步骤，而且一般token采用jwt标准生成。
 
 ### 全局权限验证
 
-未完待续。。。
+全局验证思路主要是通过router.beforeEach这个方法，在路由初始化第一次访问路由的时候就开始验证了，具体逻辑看以下代码:
+
+```
+import Vue from 'vue'
+import router from './router'
+import store from './store'
+import NProgress from 'nprogress' // progress bar
+import 'nprogress/nprogress.css' // progress bar style
+// import notification from 'ant-design-vue/es/notification'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { generateIndexRouter } from "@/utils/util"
+
+NProgress.configure({ showSpinner: false }) // NProgress Configuration
+
+const whiteList = ['/user/login', '/user/register', '/user/register-result'] // no redirect whitelist
+
+router.beforeEach((to, from, next) => {
+  NProgress.start() // start progress bar
+
+  if (Vue.ls.get(ACCESS_TOKEN)) {
+    /* has token */
+    if (to.path === '/user/login') {
+      next({ path: '/dashboard/workplace' })
+      NProgress.done()
+    } else {
+      if (store.getters.permissionList.length === 0) {
+        store.dispatch('GetPermissionList').then(res => {
+              const menuData = res.result.menu;
+              console.log(res.message)
+              if (menuData === null || menuData === "" || menuData === undefined) {
+                return;
+              }
+              let constRoutes = [];
+              constRoutes = generateIndexRouter(menuData);
+              // 添加主界面路由
+              store.dispatch('UpdateAppRouter',  { constRoutes }).then(() => {
+                // 根据roles权限生成可访问的路由表
+                // 动态添加可访问路由表
+                router.addRoutes(store.getters.addRouters)
+                const redirect = decodeURIComponent(from.query.redirect || to.path)
+                if (to.path === redirect) {
+                  // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+                  next({ ...to, replace: true })
+                } else {
+                  // 跳转到目的路由
+                  next({ path: redirect })
+                }
+              })
+            })
+          .catch(() => {
+           /* notification.error({
+              message: '系统提示',
+              description: '请求用户信息失败，请重试！'
+            })*/
+            // 未请求到权限强制退出重新登录
+            store.dispatch('Logout').then(() => {
+              next({ path: '/user/login', query: { redirect: to.fullPath } })
+            })
+          })
+      } else {
+        next()
+      }
+    }
+  } else {
+    if (whiteList.indexOf(to.path) !== -1) {
+      // 在免登录白名单，直接进入
+      next()
+    } else {
+      next({ path: '/user/login', query: { redirect: to.fullPath } })
+      NProgress.done() // if current page is login will not trigger afterEach hook, so manually handle it
+    }
+  }
+})
+
+router.afterEach(() => {
+  NProgress.done() // finish progress bar
+})
+
+```
 
 ### 路由表实现思路
 
@@ -1144,7 +1222,130 @@ const asyncRouterMap = [
 
 ### 按钮级权限控制
 
-未完待续。。。
+按钮的权限控制通过注册一个指令去实现验证，但是单单靠一个指令，有时候并不能完全满足，所以还会需要配合v-if
+
+```
+//v-has 
+<a-button @click="handleAdd" v-has="'user:add'" type="primary" icon="plus">添加用户</a-button>
+```
+```
+import { USER_AUTH,SYS_BUTTON_AUTH } from "@/store/mutation-types"
+
+const hasPermission = {
+    install (Vue, options) {
+        console.log(options);
+          Vue.directive('has', {
+            inserted: (el, binding, vnode)=>{
+                console.log("页面权限控制----");
+                //节点权限处理，如果命中则不进行全局权限处理
+                if(!filterNodePermission(el, binding, vnode)){
+                  filterGlobalPermission(el, binding, vnode);
+                }
+            }
+          });
+    }
+};
+
+/**
+ * 全局权限控制
+ */
+export function filterNodePermission(el, binding, vnode) {
+  console.log("页面权限--NODE--");
+
+  var permissionList = [];
+  try {
+    var obj = vnode.context.$props.formData;
+    if (obj) {
+      let bpmList = obj.permissionList;
+      for (var bpm of bpmList) {
+        if(bpm.type != '2') {
+          permissionList.push(bpm);
+        }
+      }
+    }
+  } catch (e) {
+    //console.log("页面权限异常----", e);
+  }
+  if (permissionList === null || permissionList === "" || permissionList === undefined||permissionList.length<=0) {
+    //el.parentNode.removeChild(el)
+    return false;
+  }
+  let permissions = [];
+  for (var item of permissionList) {
+    if(item.type != '2') {
+      permissions.push(item.action);
+    }
+  }
+  //console.log("页面权限----"+permissions);
+  //console.log("页面权限----"+binding.value);
+  if (!permissions.includes(binding.value)) {
+    //el.parentNode.removeChild(el)
+    return false;
+  }else{
+    for (var item2 of permissionList) {
+      if(binding.value === item2.action){
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/**
+ * 全局权限控制
+ */
+export function filterGlobalPermission(el, binding, vnode) {
+  console.log("页面权限--Global--");
+
+  var permissionList = [];
+  var allPermissionList = [];
+
+  //let authList = Vue.ls.get(USER_AUTH);
+  let authList = JSON.parse(sessionStorage.getItem(USER_AUTH) || "[]");
+  for (var auth of authList) {
+    if(auth.type != '2') {
+      permissionList.push(auth);
+    }
+  }
+  //console.log("页面权限--Global--",sessionStorage.getItem(SYS_BUTTON_AUTH));
+  let allAuthList = JSON.parse(sessionStorage.getItem(SYS_BUTTON_AUTH) || "[]");
+  for (var gauth of allAuthList) {
+    if(gauth.type != '2') {
+      allPermissionList.push(gauth);
+    }
+  }
+  //设置全局配置是否有命中
+  var invalidFlag = false;//无效命中
+  if(allPermissionList != null && allPermissionList != "" && allPermissionList != undefined && allPermissionList.length > 0){
+    for (var itemG of allPermissionList) {
+      if(binding.value === itemG.action){
+        if(itemG.status == '0'){
+          invalidFlag = true;
+          break;
+        }
+      }
+    }
+  }
+  if(invalidFlag){
+    return;
+  }
+  if (permissionList === null || permissionList === "" || permissionList === undefined||permissionList.length<=0) {
+    el.parentNode.removeChild(el);
+    return;
+  }
+  let permissions = [];
+  for (var item of permissionList) {
+    if(item.type != '2'){
+      permissions.push(item.action);
+    }
+  }
+  if (!permissions.includes(binding.value)) {
+    el.parentNode.removeChild(el);
+  }
+}
+
+export default hasPermission;
+```
 
 
 
