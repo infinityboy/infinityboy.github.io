@@ -2,30 +2,30 @@
 title: nginx常用代理配置
 date: 2019-06-03 21:02:25
 tags: Nginx
-categories: 
-- 后端
+categories:
+  - 后端
 ---
 
-
->本篇博客仅以个人学习记录使用
->原文链接: https://blog.csdn.net/lzc4869/article/details/79195357
+> 本篇博客仅以个人学习记录使用
+> 原文链接: https://blog.csdn.net/lzc4869/article/details/79195357
 
 ### 反向代理
 
-nginx反向代理 就是说把跨域的url通过本地代理的方式，变成同域的请求，如此来解决跨域问题 
+nginx 反向代理 就是说把跨域的 url 通过本地代理的方式，变成同域的请求，如此来解决跨域问题
 该配置下 通过http://localhost/html5/路径下的文件去请求http://localhost/request/的相关接口就相当于去请求http://localhost:8888/login/相关的接口
 
-
 ### 最简反向代理配置
-在http节点下，使用upstream配置服务地址，使用server的location配置代理映射。
+
+在 http 节点下，使用 upstream 配置服务地址，使用 server 的 location 配置代理映射。
+
 ```
-upstream my_server {                                                         
-    server 10.0.0.2:8080;                                                
+upstream my_server {
+    server 10.0.0.2:8080;
     keepalive 2000;
 }
 server {
-    listen       80;                                                         
-    server_name  10.0.0.1;                                               
+    listen       80;
+    server_name  10.0.0.1;
     client_max_body_size 1024M;
 
     location /my/ {
@@ -36,15 +36,17 @@ server {
 
 通过该配置，访问nginx地址http://10.0.0.1:80/my的请求会被转发到my_server服务地址http://10.0.0.2:8080/。
 ```
+
 需要注意的是，如果按照如下配置：
+
 ```
-upstream my_server {                                                         
-    server 10.0.0.2:8080;                                                
+upstream my_server {
+    server 10.0.0.2:8080;
     keepalive 2000;
 }
 server {
-    listen       80;                                                         
-    server_name  10.0.0.1;                                               
+    listen       80;
+    server_name  10.0.0.1;
     client_max_body_size 1024M;
 
     location /my/ {
@@ -58,7 +60,7 @@ server {
 
 ### 重定向报文代理
 
-即便配置了nginx代理，当服务返回重定向报文时（http code为301或302），会将重定向的目标url地址放入http response报文的header的location字段内。用户浏览器收到重定向报文时，会解析出该字段并作跳转。此时新的请求报文将直接发送给服务地址，而非nginx地址。为了能让nginx拦截此类请求，必须修改重定向报文的location信息。
+即便配置了 nginx 代理，当服务返回重定向报文时（http code 为 301 或 302），会将重定向的目标 url 地址放入 http response 报文的 header 的 location 字段内。用户浏览器收到重定向报文时，会解析出该字段并作跳转。此时新的请求报文将直接发送给服务地址，而非 nginx 地址。为了能让 nginx 拦截此类请求，必须修改重定向报文的 location 信息。
 
 ```
 location /my/ {
@@ -69,9 +71,9 @@ location /my/ {
 }
 ```
 
-使用proxy_redirect可以修改重定向报文的location字段，例子中会将所有的根路径下的url代理到nginx的/my/路径下返回给用户。比如服务返回的重定向报文的location原始值为/login，那么经过nginx代理后，用户收到的报文的location字段为/my/login。此时，浏览器将会跳转到nginx的/my/login地址进行访问。
+使用 proxy_redirect 可以修改重定向报文的 location 字段，例子中会将所有的根路径下的 url 代理到 nginx 的/my/路径下返回给用户。比如服务返回的重定向报文的 location 原始值为/login，那么经过 nginx 代理后，用户收到的报文的 location 字段为/my/login。此时，浏览器将会跳转到 nginx 的/my/login 地址进行访问。
 
-需要注意的是，服务返回的重定向报文的location字段有时会填写绝对路径（包含服务的ip/域名和端口），有时候会填写相对路径，此时需要根据实际情况进行甄别
+需要注意的是，服务返回的重定向报文的 location 字段有时会填写绝对路径（包含服务的 ip/域名和端口），有时候会填写相对路径，此时需要根据实际情况进行甄别
 
 ```
 location /my/ {
@@ -82,13 +84,13 @@ location /my/ {
 }
 ```
 
-上述配置便是将my_server服务的根路径下的所有路径代理到nginx地址的/my/路径下。当nginx配置只有一个server时，http://host:server_port前缀可以省略。
+上述配置便是将 my_server 服务的根路径下的所有路径代理到 nginx 地址的/my/路径下。当 nginx 配置只有一个 server 时，http://host:server_port前缀可以省略。
 
 ### 报文数据替换
 
-使用nginx代理最牛（dan）逼（sui）的情况就是http响应报文内写死了服务地址或web绝对路径。写死服务地址的情况比较少见，但也偶尔存在。最棘手的是写死了web绝对路径，尤其是绝对路径都没有公共前缀。举个例子来说：
+使用 nginx 代理最牛（dan）逼（sui）的情况就是 http 响应报文内写死了服务地址或 web 绝对路径。写死服务地址的情况比较少见，但也偶尔存在。最棘手的是写死了 web 绝对路径，尤其是绝对路径都没有公共前缀。举个例子来说：
 
-一般的web页面会包含如下类似路径：
+一般的 web 页面会包含如下类似路径：
 
 ```
 /public：用于静态页面资源，如js脚本/public/js，样式表/public/css，图片/public/img等
@@ -120,9 +122,9 @@ location /api/ {
 }
 ```
 
-由于web页面或静态资源内写死了类似的绝对路径，那么对于用户来说，通过页面内的链接进行跳转时，都会请求到nginx服务对应的路径上。一旦存在另一个服务也包含类似的路径，也需要nginx进行代理，那么矛盾就出现了：访问nginx的同一个路径下的请求究竟转发给哪一个服务？
+由于 web 页面或静态资源内写死了类似的绝对路径，那么对于用户来说，通过页面内的链接进行跳转时，都会请求到 nginx 服务对应的路径上。一旦存在另一个服务也包含类似的路径，也需要 nginx 进行代理，那么矛盾就出现了：访问 nginx 的同一个路径下的请求究竟转发给哪一个服务？
 
-要解决这个问题，必须在用户收到报文前，将报文的数据中包含的绝对路径都添加统一的前缀，如/my/public，/my/api，/my/login，这样nginx代理配置则可以简化为：
+要解决这个问题，必须在用户收到报文前，将报文的数据中包含的绝对路径都添加统一的前缀，如/my/public，/my/api，/my/login，这样 nginx 代理配置则可以简化为：
 
 ```
 location /my/ {
@@ -139,9 +141,9 @@ location /other/ {
 }
 ```
 
-nginx的ngx_http_sub_module模块提供了类似的报文数据替换功能，该模块默认不会安装，需要在编译nginx时添加–with-http_sub_module参数，或者直接下载nginx的rpm包。
+nginx 的 ngx_http_sub_module 模块提供了类似的报文数据替换功能，该模块默认不会安装，需要在编译 nginx 时添加–with-http_sub_module 参数，或者直接下载 nginx 的 rpm 包。
 
-使用sub_filter对数据包进行替换的语法如下：
+使用 sub_filter 对数据包进行替换的语法如下：
 
 ```
 location /my/ {
@@ -155,9 +157,9 @@ location /my/ {
 }
 ```
 
-上述配置会将/my/下的所有响应报文内容的href=”/替换为href=”/my，以及src=”/替换为src=”/my，即为所有的绝对路径添加公共前缀。
+上述配置会将/my/下的所有响应报文内容的 href=”/替换为 href=”/my，以及 src=”/替换为 src=”/my，即为所有的绝对路径添加公共前缀。
 
-注意，如果需要配置多个sub_filter，必须保证nginx是1.9.4版本之上的。
+注意，如果需要配置多个 sub_filter，必须保证 nginx 是 1.9.4 版本之上的。
 
 ### 一个简单的完整示例
 
@@ -202,4 +204,73 @@ http {
 }
 ```
 
+### 一个 React 类基于 History 模式路由的单页应用 nginx 配置
 
+```
+server {
+    listen 80;
+    # gzip config
+    gzip on;
+    gzip_min_length 1k;
+    gzip_comp_level 9;
+    gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;
+    gzip_vary on;
+    gzip_disable "MSIE [1-6]\.";
+
+    root /usr/share/nginx/html;
+
+    location / {
+        # 用于配合 browserHistory使用
+        try_files $uri $uri/ /index.html;
+
+        # 如果有资源，建议使用 https + http2，配合按需加载可以获得更好的体验
+        # rewrite ^/(.*)$ https://preview.pro.ant.design/$1 permanent;
+
+    }
+    //示例模板
+    location /api {
+        proxy_pass https://ant-design-pro.netlify.com;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   X-Real-IP         $remote_addr;
+    }
+
+    location /api {
+        //实际配置中，带有前缀的api请求可能会需要配置rewrite，进行前缀的代理转发，实际应用中还可配置多个
+        rewrite ^.+api/?(.*)$ /$1 break;
+        proxy_pass http://192.168.50.55:9988;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   X-Real-IP         $remote_addr;
+    }
+
+    location /gis {
+        //实际配置中，带有前缀的api请求可能会需要配置rewrite，进行前缀的代理转发，实际应用中还可配置多个
+        rewrite ^.+gis/?(.*)$ /$1 break;
+        proxy_pass http://192.168.50.55:9988;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   X-Real-IP         $remote_addr;
+    }
+
+    ...
+}
+
+server {
+  # 如果有资源，建议使用 https + http2，配合按需加载可以获得更好的体验
+  listen 443 ssl http2 default_server;
+
+  # 证书的公私钥
+  ssl_certificate /path/to/public.crt;
+  ssl_certificate_key /path/to/private.key;
+
+  location / {
+        # 用于配合 browserHistory使用
+        try_files $uri $uri/ /index.html;
+
+  }
+  location /api {
+      proxy_pass https://ant-design-pro.netlify.com;
+      proxy_set_header   X-Forwarded-Proto $scheme;
+      proxy_set_header   Host              $http_host;
+      proxy_set_header   X-Real-IP         $remote_addr;
+  }
+}
+```
