@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>简述JavaScript设计模式 | 太玄经</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本篇博客仅以个人学习记录使用  介绍一个模式就是一个可重用的方案，可应用于在软件设计中的常见问题，通常情况下，模式是行之有效的解决方法：他们提供固定的解决方法来解决在软件开发中出现的问题模式可以很容易地重用：一个模式通常反映了一个可以适应自己需要的开箱即用的解决方案。这个特性让它们很健壮。模式善于表达：当我们看到一个提供某种解决方案的模式时，一般有一组结构和词汇可以非常优雅地帮助表达相当大的解决">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简述JavaScript设计模式">
+<meta property="og:url" content="https://infinityboy.github.io/2019/12/14/%E7%AE%80%E8%BF%B0JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="太玄经">
+<meta property="og:description" content="本篇博客仅以个人学习记录使用  介绍一个模式就是一个可重用的方案，可应用于在软件设计中的常见问题，通常情况下，模式是行之有效的解决方法：他们提供固定的解决方法来解决在软件开发中出现的问题模式可以很容易地重用：一个模式通常反映了一个可以适应自己需要的开箱即用的解决方案。这个特性让它们很健壮。模式善于表达：当我们看到一个提供某种解决方案的模式时，一般有一组结构和词汇可以非常优雅地帮助表达相当大的解决">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-12-14T05:36:05.000Z">
+<meta property="article:modified_time" content="2023-05-26T01:23:55.591Z">
+<meta property="article:author" content="Hakuna Matata">
+<meta property="article:tag" content="JS">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="太玄经" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0-rc1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">太玄经</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://infinityboy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-简述JavaScript设计模式" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/14/%E7%AE%80%E8%BF%B0JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="article-date">
+  <time class="dt-published" datetime="2019-12-14T05:36:05.000Z" itemprop="datePublished">2019-12-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      简述JavaScript设计模式
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本篇博客仅以个人学习记录使用</p>
+</blockquote>
+<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>一个模式就是一个可重用的方案，可应用于在软件设计中的常见问题，通常情况下，<br>模式是行之有效的解决方法：他们提供固定的解决方法来解决在软件开发中出现的问题<br>模式可以很容易地重用：一个模式通常反映了一个可以适应自己需要的开箱即用的解决方案。这个特性让它们很健壮。<br>模式善于表达：当我们看到一个提供某种解决方案的模式时，一般有一组结构和词汇可以非常优雅地帮助表达相当大的解决方案</p>
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><h4 id="创建型设计模式"><a href="#创建型设计模式" class="headerlink" title="创建型设计模式"></a>创建型设计模式</h4><p>创建型设计模式关注于对象创建的机制方法，通过该方法,对象以适应工作环境的方式被创建。基本的对象创建方法可能会给项目增加额外的复杂性，而这些模式的目的就是为了通过控制创建过程解决这个问题。</p>
+<p>属于这一类的一些模式是：构造器模式（Constructor）,工厂模式（Factory）,抽象工厂模式 （Abstract）,原型模式 （Prototype）,单例模式 （Singleton）以及 建造者模式（Builder）</p>
+<h4 id="创建型设计模式-1"><a href="#创建型设计模式-1" class="headerlink" title="创建型设计模式"></a>创建型设计模式</h4><p>结构模式关注于对象组成和通常识别的方式实现不同对象之间的关系。该模式有助于在系统的某一部分发生改变的时候，整个系统结构不需要改变。该模式同样有助于对系统中某部分没有达到某一目的的部分进行重组。</p>
+<p>在该分类下的模式有：装饰模式，外观模式，享元模式，适配器模式和代理模式。</p>
+<h4 id="行为设计模式"><a href="#行为设计模式" class="headerlink" title="行为设计模式"></a>行为设计模式</h4><p>行为模式关注改善或精简在系统中不同对象间通信。</p>
+<p>行为模式包括：迭代模式，中介者模式，观察者模式和访问者模式。</p>
+<h4 id="根据创建对象的概念分类"><a href="#根据创建对象的概念分类" class="headerlink" title="根据创建对象的概念分类"></a>根据创建对象的概念分类</h4><p>Factory Method(工厂方法)：通过将数据和事件接口化来构建若干个子类。<br>Abstract Factory(抽象工厂)：建立若干族类的一个实例，这个实例不需要具体类的细节信息。（抽象类）<br>Builder (建造者)：将对象的构建方法和其表现形式分离开来，总是构建相同类型的对象。<br>Prototype(原型)：一个完全初始化的实例，用于拷贝或者克隆。<br>Singleton(单例)：一个类只有唯一的一个实例，这个实例在整个程序中有一个全局的访问点。</p>
+<h4 id="根据构建对象块的方法分类"><a href="#根据构建对象块的方法分类" class="headerlink" title="根据构建对象块的方法分类"></a>根据构建对象块的方法分类</h4><p>Adapter(适配器)：将不同类的接口进行匹配，调整，这样尽管内部接口不兼容但是不同的类还是可以协同工作的。<br>Bridge(桥接模式)：将对象的接口从其实现中分离出来，这样对象的实现和接口可以独立的变化。<br>Composite(组合模式)：通过将简单可组合的对象组合起来，构成一个完整的对象，这个对象的能力将会超过这些组成部分的能力的总和，即会有新的能力产生。<br>Decorator(装饰器)：动态给对象增加一些可替换的处理流程。<br>Facada(外观模式)：一个类隐藏了内部子系统的复杂度，只暴露出一些简单的接口。<br>Flyweight(享元模式)：一个细粒度对象，用于将包含在其它地方的信息 在不同对象之间高效地共享。<br>Proxy(代理模式)：一个充当占位符的对象用来代表一个真实的对象。</p>
+<h4 id="基于对象间作用方式分类"><a href="#基于对象间作用方式分类" class="headerlink" title="基于对象间作用方式分类"></a>基于对象间作用方式分类</h4><p>Interpreter(解释器)：将语言元素包含在一个应用中的一种方式，用于匹配目标语言的语法。<br>Template Method(模板方法)：在一个方法中为某个算法建立一层外壳，将算法的具体步骤交付给子类去做。</p>
+<p>Chain of Responsibility(响应链)：一种将请求在一串对象中传递的方式，寻找可以处理这个请求的对象。<br>Command(命令)：封装命令请求为一个对象，从而使记录日志，队列缓存请求，未处理请求进行错误处理 这些功能称为可能。<br>Iterator(迭代器)：在不需要直到集合内部工作原理的情况下，顺序访问一个集合里面的元素。<br>Mediator(中介者模式)：在类之间定义简化的通信方式，用于避免类之间显式的持有彼此的引用。<br>Observer(观察者模式)：用于将变化通知给多个类的方式，可以保证类之间的一致性。<br>State(状态)：当对象状态改变时，改变对象的行为。<br>Strategy(策略)：将算法封装到类中，将选择和实现分离开来。<br>Visitor(访问者)：为类增加新的操作而不改变类本身。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>设计模式有很多，大多数都是遵循设计原则，结合经验和问题所衍生出来的，设计模式也可以很灵活，虽然设计模式在解决软件开发问题当中有很大的作用但是在开发的过程中，不能因为设计模式而去设计模式，要正确认识和理解的去学习，才能更好的发挥作用。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://infinityboy.github.io/2019/12/14/%E7%AE%80%E8%BF%B0JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" data-id="cli4airk3002tdcu14pkd31mf" data-title="简述JavaScript设计模式" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/" rel="tag">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/12/14/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          函数式编程
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/12/14/js%E4%B8%AD%E7%9A%84setTimeout%E4%B8%8EPromise/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">js中的setTimeout与Promise</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Mac/">Mac</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/">科学上网</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mapbox/" rel="tag">mapbox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webGis/" rel="tag">webGis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%AE%89%E5%85%A8/" rel="tag">web安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" rel="tag">杂七杂八</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JS/" style="font-size: 17.5px;">JS</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/Nginx/" style="font-size: 20px;">Nginx</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/mapbox/" style="font-size: 10px;">mapbox</a> <a href="/tags/vue/" style="font-size: 12.5px;">vue</a> <a href="/tags/webGis/" style="font-size: 10px;">webGis</a> <a href="/tags/web%E5%AE%89%E5%85%A8/" style="font-size: 12.5px;">web安全</a> <a href="/tags/%E5%8D%8F%E8%AE%AE/" style="font-size: 10px;">协议</a> <a href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" style="font-size: 17.5px;">杂七杂八</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 10px;">浏览器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/05/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">计算机网络基础</a>
+          </li>
+        
+          <li>
+            <a href="/2023/05/26/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/05/VUE-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/">VUE 移动端适配方案</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/ES6%E6%8A%80%E5%B7%A7/">ES6技巧</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Hakuna Matata<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

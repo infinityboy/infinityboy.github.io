@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>mapbox 离线 | 太玄经</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本篇博客仅以个人学习记录使用参考链接：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;30967394参考链接：https:&#x2F;&#x2F;jacelyn.fish&#x2F;2018&#x2F;10&#x2F;19&#x2F;mapbox-localization&#x2F;  介绍mapbox是一款webgis的地图产品，起初作为leaflet的延伸，在2d地图上，有着优雅的Api，相较于arcgis等老牌产品更加轻量（当然arcgis继承的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mapbox 离线">
+<meta property="og:url" content="https://infinityboy.github.io/2019/08/03/mapbox-%E7%A6%BB%E7%BA%BF/index.html">
+<meta property="og:site_name" content="太玄经">
+<meta property="og:description" content="本篇博客仅以个人学习记录使用参考链接：https:&#x2F;&#x2F;zhuanlan.zhihu.com&#x2F;p&#x2F;30967394参考链接：https:&#x2F;&#x2F;jacelyn.fish&#x2F;2018&#x2F;10&#x2F;19&#x2F;mapbox-localization&#x2F;  介绍mapbox是一款webgis的地图产品，起初作为leaflet的延伸，在2d地图上，有着优雅的Api，相较于arcgis等老牌产品更加轻量（当然arcgis继承的">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-08-03T02:19:35.000Z">
+<meta property="article:modified_time" content="2023-05-26T07:41:17.214Z">
+<meta property="article:author" content="Hakuna Matata">
+<meta property="article:tag" content="mapbox">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="太玄经" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0-rc1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">太玄经</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://infinityboy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-mapbox-离线" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/08/03/mapbox-%E7%A6%BB%E7%BA%BF/" class="article-date">
+  <time class="dt-published" datetime="2019-08-03T02:19:35.000Z" itemprop="datePublished">2019-08-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      mapbox 离线
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本篇博客仅以个人学习记录使用<br>参考链接：<a href="https://zhuanlan.zhihu.com/p/30967394">https://zhuanlan.zhihu.com/p/30967394</a><br>参考链接：<a href="https://jacelyn.fish/2018/10/19/mapbox-localization/">https://jacelyn.fish/2018/10/19/mapbox-localization/</a></p>
+</blockquote>
+<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>mapbox是一款webgis的地图产品，起初作为leaflet的延伸，在2d地图上，有着优雅的Api，相较于arcgis等老牌产品更加轻量（当然arcgis继承的功能也更多）。那么Mapbox GL则是作为基于WebGL技术在3D地图领域的又一产品，虽然此时也还有Cesium做的也已经比较完善，但是Mapbox GL仍然有着她自己的优势，比如她的风格高度可定制化，并且她也是开源的，同时也可以用于移动端，还和Uber的几款开源产品可以相继承，更好的展现出地理信息可视化的魅力。相较于传统的瓦片地图，Mapbox GL是支持矢量数据进行渲染的并且可以实时交互，不需要与服务端通信，便可更改地图的风格、同时也可以按图层配置样式。因为Mapbox GL使用的是pbf编码的格式数据，相比较于图片资源更小，如果是在我们没有合法的底图数据，并且对于地理地形或者行政区要求不严格的情景下，还可以使用OpenStreetMap(OSM)开源地图数据用于Mapbox GL的地图底图原始数据，用于地理信息可视化。这些地图底图的原始数据可以使用sqlite数据库存储，甚至是用于移动端的离线地图数据包，可能是基于这些因素最后Map box GL采用的MBTiles数据，也是sqlite存储导出导出的数据。</p>
+<h3 id="基本使用"><a href="#基本使用" class="headerlink" title="基本使用"></a>基本使用</h3><p>虽然Mapbox 是开源产品， 但是如果想完整体验所有cool的功能需要配合使用mapbox的云平台，在云平台上可以直接处理地图风格及标记等，并且可以发布成在线服务，当然使用者也必须要注册一个accessToken。产品很好，体验也很好，也很方便，但是总是会因为一些不可描述的原因，并不能让我们这些劳苦大众爽歪歪的去使用她。。在某些场景下我们是只能在内网访问的，所以说一切的云云都将变成过眼云烟，但是这个东西真的很好啊，又可以解决我们现有的问题，这时就需要我们把她搬到我们的内网上。</p>
+<h3 id="愚公移山"><a href="#愚公移山" class="headerlink" title="愚公移山"></a>愚公移山</h3><p>要问愚公移山拢(总)共分几步？？ 我想应该是需要很多步。</p>
+<p>首先，既然是要做地理信息可视化，我们就应该先有一份底图的原始数据也就是我们说pbf格式的数据，开篇已经说到了，在我们没有紧张的合法的地图数据时我们可以使用OSM的开源地图数据来实现我们野心的第一步。</p>
+<h4 id="获取数据"><a href="#获取数据" class="headerlink" title="获取数据"></a>获取数据</h4><p>想要获取OSM数据最直接的办法是去官网下载，当然更多的情况下我们手里是shp格式的数据，这时我们可以使用QGIS等工具将shp导出成geojson格式的文件，我们也可以使用ogr2ogr进行转换，并支持属性选择和坐标系统转换等功能。也可以使用GDAL命令行转换</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//Homebrew安装方式</span><br><span class="line">/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)”;; </span><br><span class="line"></span><br><span class="line">//安装tippecanoe</span><br><span class="line">brew install tippecanoe</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/由于工具使用的GeoJson数据，所以先将相关的矢量文件转换为GeoJson文件</span><br><span class="line">ogr2ogr -f GeoJson hechi4326.json hechi4326.shp</span><br><span class="line"></span><br><span class="line">//将GeoJson文件转换为mbtiles文件</span><br><span class="line">// -o 输出文件</span><br><span class="line">// -z 裁剪层级</span><br><span class="line">// -f </span><br><span class="line">// -n 图层说明</span><br><span class="line">// -l 输出的图层名称</span><br><span class="line">// xxx.json 原文件</span><br><span class="line">tippecanoe -o hechi4326.mbtiles -z 16 -f -n 河池市各个镇 -l hechi hechi4326.json</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="数据处理"><a href="#数据处理" class="headerlink" title="数据处理"></a>数据处理</h4><p>当我们有了转换成功的geojson数据后，我们可以使用 Mapbox 开源瓦片数据处理工具 tippecanoe 转换 json 数据为 .mbtiles 格式。在这个过程中可进行独立图层合并、设置缩放范围和过滤属性等操作</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tippecanoe -o geodata.mbtiles -z 18 -Z 13 -f -n geodata ~/road.geojson ~/water.geojson ~/sea.geojson;</span><br></pre></td></tr></table></figure>
+
+<h4 id="搭建服务器"><a href="#搭建服务器" class="headerlink" title="搭建服务器"></a>搭建服务器</h4><p>根据官方的介绍我们可以使用nodejs来搭建我们的地图服务器，事实上是官方有支持更好的模块用来解析数据去渲染数据。这个包就是tilelive。</p>
+<p>例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">var express = require(&#x27;express&#x27;);</span><br><span class="line">var http = require(&#x27;http&#x27;);</span><br><span class="line">var app = express();</span><br><span class="line">var tilelive = require(&#x27;tilelive&#x27;);</span><br><span class="line">require(&#x27;mbtiles&#x27;).registerProtocols(tilelive);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">// 放置的矢量瓦片数据位置</span><br><span class="line">tilelive.load(&#x27;mbtiles:///Users/lsw/Desktop/mapbox-server/hechi4326.mbtiles&#x27;, function(err, source) &#123;</span><br><span class="line">   if (err) &#123;</span><br><span class="line">       throw err;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   // 设置端口为7777</span><br><span class="line">   app.set(&#x27;port&#x27;, 7777);</span><br><span class="line"></span><br><span class="line">   app.use(function(req, res, next) &#123;</span><br><span class="line">       // 服务端要支持跨域，否则会出现跨域问题</span><br><span class="line">       res.header(&quot;Access-Control-Allow-Origin&quot;, &quot;*&quot;);</span><br><span class="line">       res.header(&quot;Access-Control-Allow-Headers&quot;, &quot;Origin, X-Requested-With, Content-Type, Accept&quot;);</span><br><span class="line">       next();</span><br><span class="line">   &#125;);</span><br><span class="line"></span><br><span class="line">   //访问的url是：http://localhost:7777/tiles/&#123;z&#125;/&#123;x&#125;/&#123;y&#125;.pbf</span><br><span class="line">   app.get(/^\/tiles\/(\d+)\/(\d+)\/(\d+).pbf$/, function(req, res) &#123;</span><br><span class="line">       var z = req.params[0];</span><br><span class="line">       var x = req.params[1];</span><br><span class="line">       var y = req.params[2];</span><br><span class="line">       console.log(&#x27;get tile %d, %d, %d&#x27;, z, x, y);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">       source.getTile(z, x, y, function(err, tile, headers) &#123;</span><br><span class="line">           if (err) &#123;</span><br><span class="line">               res.status(404)</span><br><span class="line">               res.send(err.message);</span><br><span class="line">               console.log(err.message);</span><br><span class="line">           &#125; else &#123;</span><br><span class="line">               res.set(headers);</span><br><span class="line">               res.send(tile);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;);</span><br><span class="line">   &#125;);</span><br><span class="line"></span><br><span class="line">   http.createServer(app).listen(app.get(&#x27;port&#x27;), function() &#123;</span><br><span class="line">       console.log(&#x27;Express server listening on port &#x27; + app.get(&#x27;port&#x27;));</span><br><span class="line">   &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node server.js</span><br></pre></td></tr></table></figure>
+
+<p>这时一个地图服务器就搭建成功了。</p>
+<p>PS: 若练此功亦无需自宫 ————– 也有很多开源的支持Mbtiles的服务可以直接使用</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://infinityboy.github.io/2019/08/03/mapbox-%E7%A6%BB%E7%BA%BF/" data-id="cli4airjq000pdcu1360a1kon" data-title="mapbox 离线" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mapbox/" rel="tag">mapbox</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/08/03/css-%E6%B0%B4%E5%B9%B3%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          css 水平垂直居中
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/28/%E5%9F%BA%E7%A1%80%E5%89%8D%E7%AB%AF%E5%AE%89%E5%85%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">基础前端安全</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Mac/">Mac</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/">科学上网</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mapbox/" rel="tag">mapbox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webGis/" rel="tag">webGis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%AE%89%E5%85%A8/" rel="tag">web安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" rel="tag">杂七杂八</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JS/" style="font-size: 17.5px;">JS</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/Nginx/" style="font-size: 20px;">Nginx</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/mapbox/" style="font-size: 10px;">mapbox</a> <a href="/tags/vue/" style="font-size: 12.5px;">vue</a> <a href="/tags/webGis/" style="font-size: 10px;">webGis</a> <a href="/tags/web%E5%AE%89%E5%85%A8/" style="font-size: 12.5px;">web安全</a> <a href="/tags/%E5%8D%8F%E8%AE%AE/" style="font-size: 10px;">协议</a> <a href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" style="font-size: 17.5px;">杂七杂八</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 10px;">浏览器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/05/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">计算机网络基础</a>
+          </li>
+        
+          <li>
+            <a href="/2023/05/26/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/05/VUE-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/">VUE 移动端适配方案</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/ES6%E6%8A%80%E5%B7%A7/">ES6技巧</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Hakuna Matata<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

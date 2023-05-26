@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>mac下安装node(强迫症版) | 太玄经</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本篇博客仅以个人学习记录使用  mac 下拥有homebrew包管理器:  1.直接使用brew install node 便可以安转最新版本的node 2.先使用brew search node 可以找到当前node的版本 然后再通过 brew install node@10这样可安装指定版本 从nodejs 官网下载pkg的nodejs安装包安装 但是通常在mac上安装都回通过homebre">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mac下安装node(强迫症版)">
+<meta property="og:url" content="https://infinityboy.github.io/2019/06/03/mac%E4%B8%8B%E5%AE%89%E8%A3%85node-%E5%BC%BA%E8%BF%AB%E7%97%87%E7%89%88/index.html">
+<meta property="og:site_name" content="太玄经">
+<meta property="og:description" content="本篇博客仅以个人学习记录使用  mac 下拥有homebrew包管理器:  1.直接使用brew install node 便可以安转最新版本的node 2.先使用brew search node 可以找到当前node的版本 然后再通过 brew install node@10这样可安装指定版本 从nodejs 官网下载pkg的nodejs安装包安装 但是通常在mac上安装都回通过homebre">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-06-03T13:27:57.000Z">
+<meta property="article:modified_time" content="2023-05-26T01:23:55.575Z">
+<meta property="article:author" content="Hakuna Matata">
+<meta property="article:tag" content="杂七杂八">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="太玄经" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0-rc1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">太玄经</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://infinityboy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-mac下安装node-强迫症版" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/03/mac%E4%B8%8B%E5%AE%89%E8%A3%85node-%E5%BC%BA%E8%BF%AB%E7%97%87%E7%89%88/" class="article-date">
+  <time class="dt-published" datetime="2019-06-03T13:27:57.000Z" itemprop="datePublished">2019-06-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Mac/">Mac</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      mac下安装node(强迫症版)
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本篇博客仅以个人学习记录使用</p>
+</blockquote>
+<p>mac 下拥有homebrew包管理器: </p>
+<p>1.直接使用brew install node 便可以安转最新版本的node</p>
+<p>2.先使用brew search node 可以找到当前node的版本 然后再通过 brew install node@10这样可安装指定版本</p>
+<p>从nodejs 官网下载pkg的nodejs安装包安装</p>
+<p>但是通常在mac上安装都回通过homebrew包管理器去安装，如果这个时候单单node使用从安装包下载的方式安装就很有可能与mac的包管理器所安装的环境变量等有所冲突，所以推荐统一使用包管理器去安装，这样方便包管理器的统一管理 </p>
+<p>那么如果之前并不知道包管理的存在，或者未使用包管理器安装，匆忙的使用了安装包去安装，但是后来又想通过包管理器去安装，这样产生的冲突怎么解决呢？</p>
+<p>先直接一条命令brew uninstall node 卸载包管理器安装的node</p>
+<p>通常在使用安装包的默认安装情况下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">先执行：</span><br><span class="line">sudo rm -rf /usr/local/&#123;bin/&#123;node,npm&#125;,lib/node_modules/npm,lib/node,share/man//node.&#125; </span><br><span class="line">将local中的node清除</span><br></pre></td></tr></table></figure>
+
+<p>但是往往仅用这一条命令是不够的：</p>
+<p>1.删除&#x2F;usr&#x2F;local&#x2F;lib中的所有node和node_modules<br>2.删除&#x2F;usr&#x2F;local&#x2F;lib中的所有node和node_modules的文件夹<br>3.如果是从brew安装的, 运行brew uninstall node<br>4.检查~&#x2F;中所有的local, lib或者include文件夹, 删除里面所有node和node_modules<br>5.在&#x2F;usr&#x2F;local&#x2F;bin中, 删除所有node的可执行文件<br>6.最后运行以下代码:(可能具体安装路径会有区别 ,find ~ -name “node”   可以找到所有  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">sudo rm /usr/local/bin/npm</span><br><span class="line">sudo rm /usr/local/share/man/man1/node.1</span><br><span class="line">sudo rm /usr/local/lib/dtrace/node.d</span><br><span class="line">sudo rm -rf ~/.npm</span><br><span class="line">sudo rm -rf ~/.node-gyp</span><br><span class="line">sudo rm /opt/local/bin/node</span><br><span class="line">sudo rm /opt/local/include/node</span><br><span class="line">sudo rm -rf /opt/local/lib/node_modules</span><br></pre></td></tr></table></figure>
+
+<p>注意使用rm命令的风险，尽量确定所将要删除的文件是安全的</p>
+<p>这时可能仍然需要使用find ~ -name “node” 和 find ~ -name “npm”  查找缺漏的进行逐一删除</p>
+<p>当以上操作全部做完，执行brew doctor 命令检查，当出现相关node警告或错误时，根据提示的文件指向再进行逐一清除。清除过后再次执行brew doctor 检查一遍 ，当出现提示 Your system is ready to brew. 这时便可以再次使用brew install node 命令重新安装node。 这时再出现The <code>brew link</code> step did not complete successfully 这个错误提示时，就按提示执行brew link –overwrite node 将link绑定到node上，即成功安装node。（如果在重装node之后提示’brew link’ 下面的提示上最终提示文件指向node&#x2F;xx，如：&#x2F;usr&#x2F;local&#x2F;share&#x2F;doc&#x2F;node&#x2F;gdbinit，直接将路径下node&#x2F;文件夹rm掉，再重新安装即可）。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://infinityboy.github.io/2019/06/03/mac%E4%B8%8B%E5%AE%89%E8%A3%85node-%E5%BC%BA%E8%BF%AB%E7%97%87%E7%89%88/" data-id="cli4airjs000wdcu1emxi4ham" data-title="mac下安装node(强迫症版)" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" rel="tag">杂七杂八</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/27/%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          浏览器组成结构
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/03/%E4%BD%BF%E7%94%A8vultr%E6%90%AD%E5%BB%BAss%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">使用vultr搭建ss科学上网(1)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Mac/">Mac</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/">科学上网</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mapbox/" rel="tag">mapbox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webGis/" rel="tag">webGis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%AE%89%E5%85%A8/" rel="tag">web安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" rel="tag">杂七杂八</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JS/" style="font-size: 17.5px;">JS</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/Nginx/" style="font-size: 20px;">Nginx</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/mapbox/" style="font-size: 10px;">mapbox</a> <a href="/tags/vue/" style="font-size: 12.5px;">vue</a> <a href="/tags/webGis/" style="font-size: 10px;">webGis</a> <a href="/tags/web%E5%AE%89%E5%85%A8/" style="font-size: 12.5px;">web安全</a> <a href="/tags/%E5%8D%8F%E8%AE%AE/" style="font-size: 10px;">协议</a> <a href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" style="font-size: 17.5px;">杂七杂八</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 10px;">浏览器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/05/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">计算机网络基础</a>
+          </li>
+        
+          <li>
+            <a href="/2023/05/26/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/05/VUE-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/">VUE 移动端适配方案</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/ES6%E6%8A%80%E5%B7%A7/">ES6技巧</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Hakuna Matata<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

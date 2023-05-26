@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>WebGis开发基础 | 太玄经</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本篇博客仅以个人学习记录使用  B&#x2F;S体系架构Web软件开发通常使用B&#x2F;S(Browser&#x2F;Server,浏览器&#x2F;服务器)架构，这是Web兴起后的一种网络结构模式   WebGIS 框架结构了解WebGis的总体框架，理解其各层次的逻辑结构关系，有助于快速学习WebGIS的开发与应用，高效地完成系统设计与功能实现。WebGIS的框架跟其他Web项目的框架没">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WebGis开发基础">
+<meta property="og:url" content="https://infinityboy.github.io/2019/06/03/WebGis%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="太玄经">
+<meta property="og:description" content="本篇博客仅以个人学习记录使用  B&#x2F;S体系架构Web软件开发通常使用B&#x2F;S(Browser&#x2F;Server,浏览器&#x2F;服务器)架构，这是Web兴起后的一种网络结构模式   WebGIS 框架结构了解WebGis的总体框架，理解其各层次的逻辑结构关系，有助于快速学习WebGIS的开发与应用，高效地完成系统设计与功能实现。WebGIS的框架跟其他Web项目的框架没">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-06-03T13:22:27.000Z">
+<meta property="article:modified_time" content="2023-05-26T07:45:59.345Z">
+<meta property="article:author" content="Hakuna Matata">
+<meta property="article:tag" content="webGis">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="太玄经" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0-rc1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">太玄经</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://infinityboy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-WebGis开发基础" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/03/WebGis%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80/" class="article-date">
+  <time class="dt-published" datetime="2019-06-03T13:22:27.000Z" itemprop="datePublished">2019-06-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      WebGis开发基础
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本篇博客仅以个人学习记录使用</p>
+</blockquote>
+<h3 id="B-x2F-S体系架构"><a href="#B-x2F-S体系架构" class="headerlink" title="B&#x2F;S体系架构"></a>B&#x2F;S体系架构</h3><p>Web软件开发通常使用B&#x2F;S(Browser&#x2F;Server,浏览器&#x2F;服务器)架构，这是Web兴起后的一种网络结构模式  </p>
+<h3 id="WebGIS-框架结构"><a href="#WebGIS-框架结构" class="headerlink" title="WebGIS 框架结构"></a>WebGIS 框架结构</h3><p>了解WebGis的总体框架，理解其各层次的逻辑结构关系，有助于快速学习WebGIS的开发与应用，高效地完成系统设计与功能实现。<br>WebGIS的框架跟其他Web项目的框架没有很多本质上的区别，唯一不同的是WebGIS需要提供一些地图方面的功能服务，即GIS服务资源。WebGIS底层为数据层，提供空间数据与业务数据等基础数据支撑：中间层一般包括提供基础GIS服务的GIS服务器和提供应用服务支撑的业务逻辑服务器，其中GIS服务器可以是专业的GIS开发平台或开源GIS项目，也可以是简单的大众化应用地图服务器，主要为应用层提供地图数据服务和功能服务资源；最上层则为客户端应用层，可使用各类WebGIS API进行开发，与GIS服务器或业务逻辑服务器交互，实现满足具体需求的Web应用</p>
+<h3 id="WebGIS开发相关的GIS背景知识"><a href="#WebGIS开发相关的GIS背景知识" class="headerlink" title="WebGIS开发相关的GIS背景知识"></a>WebGIS开发相关的GIS背景知识</h3><p>WebGIS是GIS与Web相融合的地理信息应用系统。最核心的是空间数据，地图则是其最显著的表现特征。因此，需要了解几何图形、GIS数据、网络地图数据服务，以及WebGIS开发中的一个关键知识—-逻辑坐标与窗口坐标之间的转换</p>
+<h3 id="基础几何图形"><a href="#基础几何图形" class="headerlink" title="基础几何图形"></a>基础几何图形</h3><p>地图可视化是GIS的基础功能，而几何图形则是地图表达的基本元素，对于二维空间中的点、线、面实体，需要首先了解点、线、区的几何图形概念，理解基于这些基础几何图形抽象表达空间实体的基本原理。<br>1.点<br>点是几何图形最基本的单元，是空间中只有位置没有大小的图形。在一个平面上，通常用一个有序坐标对(x,y)来表示一个点，其中习惯上x表示水平位置，y表示垂直位置，虽然一个有序坐标对可以确定一个点的位置，但由于点是现实世界中点状物（如电杆、灯塔、泉水、水文站、气象观测点等）的抽象，种类多种多样，所以除了空间位置外，点还有一些属性，如种类、颜色等。<br>在计算机中，为了记录和显示不同的点，通常给每个点一个唯一的编号，称为ID:为了显示不同的图案以表达不同的含义，还要记录图案号。<br>2.线<br>线是现实世界中线状物（如道路、河流、航线、电力线等）的抽象。当我们要记录一条线时，把所有的点记录下来显然是不切实际的，我们仅仅须记录线上的一些“节点”就可以描述整条线。这些“节点”就是线的端点与转折点。所以，在计算机中，一条线用有限多个有序坐标点来表示。与点类似，线的种类也是多种多样的，除了节点序列，还有颜色、线型、种类等更丰富的属性。为了区分不同的线，每条线同样要分配一个唯一的ID<br>3.区<br>区是现实世界中面状物（如地块，湖泊，行政区等）的抽象。在计算机中，区是由平面上三个及三个以上的节点连接而成的封闭图形，即我们通过有序描述区边界的节点来描述一个最简单的区，这样，最简单的区就是一个有限多个有序的坐标点。与点、线类似，区的种类也是多种多样的，除了节点序列，还有颜色，填充图案、种类等属性。为了区分不同的区，每个区同样要分配一个唯一的ID</p>
+<h3 id="GIS地图学基础"><a href="#GIS地图学基础" class="headerlink" title="GIS地图学基础"></a>GIS地图学基础</h3><p>GIS是地图学的延伸，脱胎于地图。因此，了解地图学基础知识，可以帮助您理解GIS,为GIS开发奠定GIS理论基础。<br>地球不是一个正球体，是一个近于梨形的椭球体。地球自然表面则是一个起伏不平、十分不规则的表面，既有高山、丘陵和平原，又有江河湖海。<br>1.坐标系<br>坐标系统是用于定义要素实际位置的坐标框架，包括坐标原点（o）、长半轴（a）、短半轴（b）、扁率（f）。<br>坐标系统可分为地理坐标系和投影坐标系:<br>地理坐标系是直接建立在球体上，用经度和纬度表达地理对象位置，投影坐标系是建立在平面上的坐标系统。<br>地球椭球体是一种对地球形状的数学描述，常见的坐标系统如图  </p>
+<table>
+<thead>
+<tr>
+<th>坐标系</th>
+<th>椭球体</th>
+<th>坐标原点</th>
+<th>椭球体长半轴</th>
+<th>椭球体短半轴</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1954北京坐标系</td>
+<td>克拉索夫斯基椭球体</td>
+<td>椭球体中心</td>
+<td>6378245</td>
+<td>6356863.0</td>
+</tr>
+<tr>
+<td>1980西安坐标系</td>
+<td>1975国际椭球</td>
+<td>椭球体中心</td>
+<td>6378140</td>
+<td>6356755.2882</td>
+</tr>
+<tr>
+<td>WGS1984</td>
+<td>WGS1984椭球体</td>
+<td>椭球体地心</td>
+<td>6378137</td>
+<td>6356752.3142</td>
+</tr>
+<tr>
+<td>CGCS2000</td>
+<td>与我们国家地形逼近的椭球</td>
+<td>椭球体地心</td>
+<td>6378137</td>
+<td>6356752.31414</td>
+</tr>
+</tbody></table>
+<p>大地坐标系的定义则是：以参考椭球体（用来模拟地球的光滑球体）中心为原点，本初子午面（英国格林尼制天文台所在位置为本初子午线，及0经度线）为纵轴方向，赤道平面是横轴方向，简单理解，地理坐标系是建立在椭球体基础上的，然而我们拿到手里的通常是一个平面的地图，所以需要把椭球按照一定的法则展开到平面上，这就是投影坐标系<br>2.投影转换<br>地球椭球体表面是曲面，而地图通常要绘制在平面图纸上，因此要把曲面展开为平面，然而球面是一个不可展开的曲面，换句话说就是展开并不能保证不发生破裂或褶皱，用这样的平面去绘制地图是不可用的，所以就必须有一种特殊的方法去操作展开为平面，于是就有了地图投影理论。其基本原理是：因为球面上一点的位置决定于它的经纬度，所以实际投影时是先将一些经纬线的交点展绘在平面上，再将相同的经度的点连成经线，相同的纬度的点连成纬线，构成经纬网。有了经纬网以后，就可以将球面上的点，按其经纬度会在平面上相应的位置处。<br>由于球面上任何一点的位置是用地理坐标表示的，而平面上的点的位置是用直角坐标系（x，y）或极坐标（r）表示的，所以想要将地球表面上的点转移到平面上，必须采用一定的方法来确定地理坐标与平面直角坐标或极坐标之间的关系。从经纬度转换为平面坐标时总会出现扭曲变形，地图投影就是用来减小这种变形的。<br>地图投影的种类很多，一般按照两种标准进行分类，一是按投影的变形性质分类，二是按照投影的构成方式分类。  </p>
+<p>按投影变形性质分类：<br>(1)等角投影。能保持无限小图形的相似，同一点上长度比处处相同，不同点变形圆的半径不同，大范围看，投影图形与地面实际形状并不完全相似。由于这种投影无角度变形，便于图上量测方向&#x2F;角度，所以常用于真实角度和方向要求高的地图，如航海、洋流和风向图等。由于此类投影面积变形很大，故不能算量面积。<br>(2)等面积投影。等积投影是等面积投影，便于面积的比较和量算。常用于对面积经度要求较高的自然和经济地图，如地质、土壤、土地利用、行政区划等地图。<br>(3)任意投影。既不等角又不等积，各方面变形都存在，但都适中。在任意投影中，有一类比较特殊的投影叫做等距投影，满足正轴投影中经线长度比为1，在斜轴或横轴投影中垂直长度比为1。  </p>
+<p>按投影构成方式分类：<br>(1)几何投影。几何投影是把椭球体面上的经纬网直接或附加某种条件投影和圆柱投影。根据投影面与球面的位置关系的不同又可将其划分为正轴投影、横轴投影、斜轴投影。<br>(2)解析投影。解析投影是不借助于辅助几何面，直接用解析法得到经纬网的一种投影，主要包括伪方位投影，伪圆锥投影、伪圆柱投影、多圆锥投影。<br>目前常用的投影有墨卡托（正轴等角圆柱投影）、高斯-克吕格投影（等角横切圆柱投影）、UTM投影（等角横轴割圆柱投影）、Lambert投影（等角正割圆锥投影）等。 </p>
+<h3 id="GIS数据与应用"><a href="#GIS数据与应用" class="headerlink" title="GIS数据与应用"></a>GIS数据与应用</h3><p>空间数据是GIS的心脏。根据数据来源不同，地理数据包括地图数据、遥感影像数据、地形数据。以及其他的统计数据、文字报告等。针对空间数据，GIS有两大基本存储模型，一种是矢量数据模型，另一种是栅格数据模型。矢量数据模型以离散的点坐标表示地理要素，通过点、线、面以及标记来抽象表达空间实体以及实体间的关系：栅格数据模型则以一系列栅格值来表示，基于网格数据使用不同颜色和灰度额度像元来表达。除此之外，还有TIN数据模型，常用于存储高程数据。一般来说，具有明确对象的空间数据，一般使用矢量数据模型存储，如地籍数据、行政边界、街道等；具有连续空间变化的空间数据，则使用栅格数据模型存储。在实际应用中，大部分地图数据为矢量数据，遥感影像为栅格数据。<br>空间数据具备空间特征、属性特征和时间特征。其中，空间特征即为地理位置信息，包括空间位置（定位特征）与空间关系（几何特征），一般用坐标数据表示：属性特征表示实体的特征，如名称、分类、质量特征与数量特征等:时间特征则描述实体随时间的变化。在GIS应用中，地理数据库存储空间数据时，将空间几何信息与属性信息进行统一存储管理，同时可将其他属性信息（包括业务数据）单独存储在业务数据库中进行管理，及外挂属性，灵活应用。<br>在WebGIS应用中，WebGIS的二维地图主要分为矢量地图与瓦片地图两种形式。<br>(1)何为矢量地图？矢量地图通常指采用矢量数据模型存储的矢量数据组织饿地图。矢量地图加载是根据客户端请求的地图范围实时从服务器的地图数据库取图，实时生成请求范围想对应的地图，返回给客户端一张地图图片。其中，遥感影像与矢量地图采用同样的出图机制和方法。<br>(2)何为瓦片？瓦片即网格中有多个类似瓦片的图片集。瓦片数据是将矢量或影像数据进行预处理，采用高效地缓存机制（如金字塔）形成的缓存图片集，采用“级、行、列”方式进行组织，可在网页中快速加载。因此，瓦片地图加载是根据客户端请求的地图范围和级别，通过计算行列号获取对应级别下网格的瓦片（即服务预裁剪的图片），由这些瓦片集在客户端形成一张地图。<br>矢量地图和瓦片地图各具特点和优势，两者可以结合应用。矢量地图实时生成，可以对地图数据进行在线编辑，查询分析，具有空间关系，能够支持网络分析、空间分析等应用。瓦片地图由于是预裁剪的缓存图片集，网络加载速度较快、效果好，常作为地图底图。  </p>
+<h3 id="网格地图数据服务"><a href="#网格地图数据服务" class="headerlink" title="网格地图数据服务"></a>网格地图数据服务</h3><p>所谓”巧妇难为无米之炊”，数据才是王道，否则GIS系统就是一个空架子。在WebGIS应用中，数据组织非常关键，需要根据项目需求进行各方面平衡，以选择最佳的数据组织方案。 </p>
+<h3 id="WebGIS坐标转换"><a href="#WebGIS坐标转换" class="headerlink" title="WebGIS坐标转换"></a>WebGIS坐标转换</h3><p>在WebGIS开发中，涉及到逻辑坐标与窗口坐标的转换。逻辑坐标指实际的地体坐标，即数据坐标系，表示真实的地理空间位置；窗口坐标指Web网页中地图逻辑坐标对应的屏幕坐标，是根据网页中地图容器布局（大小与位置），将地图逻辑坐标进行转换得到的。当在客户端实现图形交互绘制、地图查询、编辑等功能时，鼠标交互获取到的是窗口坐标，通常要将其转换为对应的逻辑坐标，进而实现具体功能。数据坐标到窗口坐标的映射可以看成现实世界中的景物在PC浏览器窗口中的显示。窗口坐标系与数据坐标系存在比例关系，这个比例关系可以理解为数据坐标系中单位长度与窗口坐标系中的长度的投影。如果窗口坐标系的原点是数据坐标系中Q点的投影，那么位于数据坐标系的中一个坐标点p(x,y)，当显示到窗口坐标系中对应坐标为P’(x’,y’)时，它们之间存在以下换算关系：  </p>
+<p>x’&#x3D;(x-X。)xr y’&#x3D;(y-Y。)xr<br>其中，r是窗口坐标系中的单位长度与数据坐标系中对应的实际长度之比，类似于地图比例尺。<br>例如一个常见的矩形查询，需要将矩形范围的窗口坐标点转为数据坐标点然后把数据坐标范围作为查询条件进行查询。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://infinityboy.github.io/2019/06/03/WebGis%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80/" data-id="cli4airjk0008dcu1at2x6ysa" data-title="WebGis开发基础" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webGis/" rel="tag">webGis</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/03/%E4%BD%BF%E7%94%A8vultr%E6%90%AD%E5%BB%BAss%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91-1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          使用vultr搭建ss科学上网(1)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/03/nginx%E5%B8%B8%E7%94%A8%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">nginx常用代理配置</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Mac/">Mac</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/">科学上网</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mapbox/" rel="tag">mapbox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webGis/" rel="tag">webGis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%AE%89%E5%85%A8/" rel="tag">web安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" rel="tag">杂七杂八</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JS/" style="font-size: 17.5px;">JS</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/Nginx/" style="font-size: 20px;">Nginx</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/mapbox/" style="font-size: 10px;">mapbox</a> <a href="/tags/vue/" style="font-size: 12.5px;">vue</a> <a href="/tags/webGis/" style="font-size: 10px;">webGis</a> <a href="/tags/web%E5%AE%89%E5%85%A8/" style="font-size: 12.5px;">web安全</a> <a href="/tags/%E5%8D%8F%E8%AE%AE/" style="font-size: 10px;">协议</a> <a href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" style="font-size: 17.5px;">杂七杂八</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 10px;">浏览器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/05/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">计算机网络基础</a>
+          </li>
+        
+          <li>
+            <a href="/2023/05/26/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/05/VUE-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/">VUE 移动端适配方案</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/ES6%E6%8A%80%E5%B7%A7/">ES6技巧</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Hakuna Matata<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

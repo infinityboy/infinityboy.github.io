@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Linux下常用压缩解压命令和压缩率对比 | 太玄经</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本篇博客仅以个人学习记录使用原文链接: https:&#x2F;&#x2F;www.cnblogs.com&#x2F;joshua317&#x2F;p&#x2F;6170839.html  常用的格式有：tar, tar.gz(tgz), tar.bz2,不同方式，压缩和解压方式所耗CPU时间和压缩比率也差异也比较大。 1.tar —- 只是打包动作，相当于归档处理，不做压缩；解压也一样，只是把归档文件释放出来。 (1)打包归档格式： 1234">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux下常用压缩解压命令和压缩率对比">
+<meta property="og:url" content="https://infinityboy.github.io/2019/06/03/Linux%E4%B8%8B%E5%B8%B8%E7%94%A8%E5%8E%8B%E7%BC%A9%E8%A7%A3%E5%8E%8B%E5%91%BD%E4%BB%A4%E5%92%8C%E5%8E%8B%E7%BC%A9%E7%8E%87%E5%AF%B9%E6%AF%94/index.html">
+<meta property="og:site_name" content="太玄经">
+<meta property="og:description" content="本篇博客仅以个人学习记录使用原文链接: https:&#x2F;&#x2F;www.cnblogs.com&#x2F;joshua317&#x2F;p&#x2F;6170839.html  常用的格式有：tar, tar.gz(tgz), tar.bz2,不同方式，压缩和解压方式所耗CPU时间和压缩比率也差异也比较大。 1.tar —- 只是打包动作，相当于归档处理，不做压缩；解压也一样，只是把归档文件释放出来。 (1)打包归档格式： 1234">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-06-03T12:31:29.000Z">
+<meta property="article:modified_time" content="2023-05-26T01:23:55.575Z">
+<meta property="article:author" content="Hakuna Matata">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="太玄经" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0-rc1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">太玄经</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://infinityboy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Linux下常用压缩解压命令和压缩率对比" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/03/Linux%E4%B8%8B%E5%B8%B8%E7%94%A8%E5%8E%8B%E7%BC%A9%E8%A7%A3%E5%8E%8B%E5%91%BD%E4%BB%A4%E5%92%8C%E5%8E%8B%E7%BC%A9%E7%8E%87%E5%AF%B9%E6%AF%94/" class="article-date">
+  <time class="dt-published" datetime="2019-06-03T12:31:29.000Z" itemprop="datePublished">2019-06-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Linux下常用压缩解压命令和压缩率对比
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本篇博客仅以个人学习记录使用<br>原文链接: <a href="https://www.cnblogs.com/joshua317/p/6170839.html">https://www.cnblogs.com/joshua317/p/6170839.html</a></p>
+</blockquote>
+<p>常用的格式有：<br>tar, tar.gz(tgz), tar.bz2,<br>不同方式，压缩和解压方式所耗CPU时间和压缩比率也差异也比较大。</p>
+<p>1.tar —- 只是打包动作，相当于归档处理，不做压缩；解压也一样，只是把归档文件释放出来。</p>
+<p>(1)打包归档格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">tar -cvf examples.tar files|dir</span><br><span class="line">#说明：</span><br><span class="line">-c, --create  create a new archive 创建一个归档文件</span><br><span class="line">-v, --verbose verbosely list files processed 显示创建归档文件的进程</span><br><span class="line">-f, --file=ARCHIVE use archive file or device ARCHIVE  后面要立刻接被处理的档案名,比如--file=examples.tar</span><br><span class="line"></span><br><span class="line">#举例：</span><br><span class="line">tar -cvf file.tar file1       #file1文件</span><br><span class="line">tar -cvf file.tar file1 file2 #file1，file2文件</span><br><span class="line">tar -cvf file.tar dir         #dir目录</span><br></pre></td></tr></table></figure>
+
+<p>(2)释放解压格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf examples.tar （解压至当前目录下）</span><br><span class="line">tar -xvf examples.tar  -C /path (/path 解压至其它路径)</span><br><span class="line"></span><br><span class="line">#说明：</span><br><span class="line">-x, --extract, extract files from an archive 从一个归档文件中提取文件</span><br><span class="line"></span><br><span class="line">#举例：</span><br><span class="line">tar -xvf file.tar</span><br><span class="line">tar -xvf file.tar -C /temp  #解压到temp目录下</span><br></pre></td></tr></table></figure>
+
+<p>2.tar.gz tgz—- (tar.gz和tgz只是两种不同的书写方式，后者是一种简化书写，等同处理)</p>
+<p>这种格式是Linux下使用非常普遍的一种压缩方式，兼顾了压缩时间（耗费CPU）和压缩空间（压缩比率）</p>
+<p>其实这是对tar包进行gzip算法的压缩</p>
+<p>(1)打包压缩格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tar -zcvf examples.tgz examples (examples当前执行路径下的目录)</span><br><span class="line"></span><br><span class="line">说明：</span><br><span class="line">-z, --gzip filter the archive through gzip 通过gzip压缩的形式对文件进行归档</span><br><span class="line"></span><br><span class="line">举例：</span><br><span class="line">tar -zcvf file.tgz dir #dir目录</span><br></pre></td></tr></table></figure>
+
+<p>(2)释放解压格式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf examples.tar （解压至当前执行目录下）</span><br><span class="line">tar -zxvf examples.tar  -C /path (/path 解压至其它路径)</span><br><span class="line"></span><br><span class="line">举例：</span><br><span class="line">tar -zcvf file.tgz</span><br><span class="line">tar -zcvf file.tgz -C /temp</span><br></pre></td></tr></table></figure>
+
+<p>3.tar.bz —- Linux下压缩比率较tgz大，即压缩后占用更小的空间，使得压缩包看起来更小。但同时在压缩，解压的过程却是非常耗费CPU时间。</p>
+<p>(1)打包压缩格式:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">tar -jcvf examples.tar.bz2 examples   (examples为当前执行路径下的目录)</span><br><span class="line"></span><br><span class="line">说明：</span><br><span class="line">-j, --bzip2 filter the archive through bzip2 通过bzip2压缩的形式对文件进行归档</span><br><span class="line"></span><br><span class="line">举例：</span><br><span class="line">tar -jcvf file.tar.bz2 dir #dir目录</span><br></pre></td></tr></table></figure>
+
+<p>(2)释放解压：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tar -jxvf examples.tar.bz2 （解压至当前执行目录下）</span><br><span class="line">tar -jxvf examples.tar.bz2  -C /path (/path 解压至其它路径)</span><br><span class="line"></span><br><span class="line">举例：</span><br><span class="line">tar -jxvf file.tar.bz2</span><br><span class="line">tar -jxvf file.tar.bz2 -C /temp</span><br></pre></td></tr></table></figure>
+
+<p>4.gzip</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">压缩：gzip -d examples.gz examples</span><br><span class="line">解压：</span><br><span class="line">gunzip examples.gz</span><br><span class="line">````</span><br><span class="line"></span><br><span class="line">5.zip-----zip 格式是开放且免费的，所以广泛使用在 Windows、Linux、MacOS 平台，要说 zip 有什么缺点的话，就是它的压缩率并不是很高，不如 rar及 tar.gz 等格式。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>压缩：<br>zip -r examples.zip examples (examples为目录)<br>解压：<br>zip examples.zip</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">6 .rar</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>压缩：<br>rar -a examples.rar examples</p>
+<p>解压：<br>rar -x examples.rar</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 压缩比率，占用时间对比</span><br><span class="line"></span><br><span class="line">为了保证能够让压缩比率较为明显，需选取一个内容较多、占用空间较大的目录作为本次实验的测试。</span><br><span class="line">找了一个大概有23G的目录来测试,首先要明确由于执行环境的变化，误差在所难免</span><br><span class="line"></span><br><span class="line">首先明确一个概念：</span><br><span class="line"></span><br><span class="line">压缩比率=原内容大小/压缩后大小，压缩比率越大，则表明压缩后占用空间的压缩包越小</span><br><span class="line"></span><br><span class="line">.tar---</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>time tar -cvf test.tar &#x2F;usr&#x2F;test<br>时间：<br>real    3m20.709s<br>user    0m3.477s<br>sys     0m42.595s</p>
+<p>大小：<br>打包前：23214680<br>打包后：22202984</p>
+<p>耗时：3m20.709s<br>压缩比率：22202984&#x2F;23214680</p>
+<p>解压：<br>time tar -xvf test.tar</p>
+<p>大小：<br>解压前：22202984<br>解压后：23211064</p>
+<p>耗时:<br>real    2m47.548s<br>user    0m4.999s<br>sys     1m14.186s</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">.tgz----</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>打包压缩：<br>time tar -zcvf test.tgz &#x2F;usr&#x2F;test<br>时间：<br>real    16m30.767s<br>user    16m1.394s<br>sys     1m7.391s</p>
+<p>大小：<br>打包前：23211064<br>打包后：18949032</p>
+<p>耗时：<br>压缩比率：</p>
+<p>解压：<br>tar -zxvf test.tar</p>
+<p>大小：<br>解压前：18949032<br>解压后：23211064</p>
+<p>耗时:<br>real    3m52.418s<br>user    2m46.325s<br>sys     1m21.442s</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">.tar.bz2---</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>打包压缩：<br>time tar -jcvf test.tar.bz2 &#x2F;usr&#x2F;test</p>
+<p>时间：<br>real    80m39.422s<br>user    80m14.599s<br>sys     0m58.623s</p>
+<p>大小：<br>打包前：23211064<br>打包后：18728904</p>
+<p>耗时：80m39.422s<br>压缩比率：</p>
+<p>解压：<br>time tar -jxvf test.tar.bz2</p>
+<p>时间：<br>real    27m54.525s<br>user    27m44.108s<br>sys     1m43.645s</p>
+<p>大小：<br>解压前：18728904<br>解压后：23211064</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p>综上结果，初步结论：</p>
+<p>综合起来，在压缩比率上： tar.bz2 &gt; tgz &gt; tar</p>
+<p>占用空间与压缩比率成反比： tar.bz2 &lt; tgz &lt; tar</p>
+<p>耗费时间（打包，解压）</p>
+<p>打包：tar.bz2&gt;tgz&gt;tar</p>
+<p>解压： tar.bz2&gt;tar&gt;tgz</p>
+<p>从效率角度来说，当然是耗费时间越短越好</p>
+<p>因此，Linux下对于占用空间与耗费时间的折衷多选用tgz格式，不仅压缩率较高，而且打包、解压的时间都较为快速，是较为理想的选择。</p>
+<p>结论：</p>
+<p>再一次印证了物理空间与时间的矛盾（想占用更小的空间，得到高压缩比率，肯定要牺牲较长的时间；反之，如果时间较为宝贵，要求快速，那么所得的压缩比率一定较小，当然会占用更大的空间了）。</p>
+<pre><code>
+</code></pre>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://infinityboy.github.io/2019/06/03/Linux%E4%B8%8B%E5%B8%B8%E7%94%A8%E5%8E%8B%E7%BC%A9%E8%A7%A3%E5%8E%8B%E5%91%BD%E4%BB%A4%E5%92%8C%E5%8E%8B%E7%BC%A9%E7%8E%87%E5%AF%B9%E6%AF%94/" data-id="cli4airje0001dcu19zhc9u1z" data-title="Linux下常用压缩解压命令和压缩率对比" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/03/linux-wget-%E5%91%BD%E4%BB%A4%E4%BB%8B%E7%BB%8D/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          linux wget 命令介绍
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/02/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">高并发负载均衡简单概括</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Mac/">Mac</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/">科学上网</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mapbox/" rel="tag">mapbox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webGis/" rel="tag">webGis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%AE%89%E5%85%A8/" rel="tag">web安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" rel="tag">杂七杂八</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JS/" style="font-size: 17.5px;">JS</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/Nginx/" style="font-size: 20px;">Nginx</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/mapbox/" style="font-size: 10px;">mapbox</a> <a href="/tags/vue/" style="font-size: 12.5px;">vue</a> <a href="/tags/webGis/" style="font-size: 10px;">webGis</a> <a href="/tags/web%E5%AE%89%E5%85%A8/" style="font-size: 12.5px;">web安全</a> <a href="/tags/%E5%8D%8F%E8%AE%AE/" style="font-size: 10px;">协议</a> <a href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" style="font-size: 17.5px;">杂七杂八</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 10px;">浏览器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/05/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">计算机网络基础</a>
+          </li>
+        
+          <li>
+            <a href="/2023/05/26/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/05/VUE-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/">VUE 移动端适配方案</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/ES6%E6%8A%80%E5%B7%A7/">ES6技巧</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Hakuna Matata<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

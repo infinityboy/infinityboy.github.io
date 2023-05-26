@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>nginx常用代理配置 | 太玄经</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本篇博客仅以个人学习记录使用原文链接: https:&#x2F;&#x2F;blog.csdn.net&#x2F;lzc4869&#x2F;article&#x2F;details&#x2F;79195357  反向代理nginx 反向代理 就是说把跨域的 url 通过本地代理的方式，变成同域的请求，如此来解决跨域问题该配置下 通过http:&#x2F;&#x2F;localhost&#x2F;html5&#x2F;路径下的文件去请求http:&#x2F;&#x2F;localhost&#x2F;request&#x2F;的相关接口">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx常用代理配置">
+<meta property="og:url" content="https://infinityboy.github.io/2019/06/03/nginx%E5%B8%B8%E7%94%A8%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="太玄经">
+<meta property="og:description" content="本篇博客仅以个人学习记录使用原文链接: https:&#x2F;&#x2F;blog.csdn.net&#x2F;lzc4869&#x2F;article&#x2F;details&#x2F;79195357  反向代理nginx 反向代理 就是说把跨域的 url 通过本地代理的方式，变成同域的请求，如此来解决跨域问题该配置下 通过http:&#x2F;&#x2F;localhost&#x2F;html5&#x2F;路径下的文件去请求http:&#x2F;&#x2F;localhost&#x2F;request&#x2F;的相关接口">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-06-03T13:02:25.000Z">
+<meta property="article:modified_time" content="2023-05-26T01:23:55.575Z">
+<meta property="article:author" content="Hakuna Matata">
+<meta property="article:tag" content="Nginx">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="太玄经" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0-rc1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">太玄经</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://infinityboy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-nginx常用代理配置" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/03/nginx%E5%B8%B8%E7%94%A8%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/" class="article-date">
+  <time class="dt-published" datetime="2019-06-03T13:02:25.000Z" itemprop="datePublished">2019-06-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      nginx常用代理配置
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本篇博客仅以个人学习记录使用<br>原文链接: <a href="https://blog.csdn.net/lzc4869/article/details/79195357">https://blog.csdn.net/lzc4869/article/details/79195357</a></p>
+</blockquote>
+<h3 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h3><p>nginx 反向代理 就是说把跨域的 url 通过本地代理的方式，变成同域的请求，如此来解决跨域问题<br>该配置下 通过<a href="http://localhost/html5/%E8%B7%AF%E5%BE%84%E4%B8%8B%E7%9A%84%E6%96%87%E4%BB%B6%E5%8E%BB%E8%AF%B7%E6%B1%82http://localhost/request/%E7%9A%84%E7%9B%B8%E5%85%B3%E6%8E%A5%E5%8F%A3%E5%B0%B1%E7%9B%B8%E5%BD%93%E4%BA%8E%E5%8E%BB%E8%AF%B7%E6%B1%82http://localhost:8888/login/%E7%9B%B8%E5%85%B3%E7%9A%84%E6%8E%A5%E5%8F%A3">http://localhost/html5/路径下的文件去请求http://localhost/request/的相关接口就相当于去请求http://localhost:8888/login/相关的接口</a></p>
+<h3 id="最简反向代理配置"><a href="#最简反向代理配置" class="headerlink" title="最简反向代理配置"></a>最简反向代理配置</h3><p>在 http 节点下，使用 upstream 配置服务地址，使用 server 的 location 配置代理映射。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">upstream my_server &#123;</span><br><span class="line">    server 10.0.0.2:8080;</span><br><span class="line">    keepalive 2000;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  10.0.0.1;</span><br><span class="line">    client_max_body_size 1024M;</span><br><span class="line"></span><br><span class="line">    location /my/ &#123;</span><br><span class="line">        proxy_pass http://my_server/;</span><br><span class="line">        proxy_set_header Host $host:$server_port;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">通过该配置，访问nginx地址http://10.0.0.1:80/my的请求会被转发到my_server服务地址http://10.0.0.2:8080/。</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，如果按照如下配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">upstream my_server &#123;</span><br><span class="line">    server 10.0.0.2:8080;</span><br><span class="line">    keepalive 2000;</span><br><span class="line">&#125;</span><br><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  10.0.0.1;</span><br><span class="line">    client_max_body_size 1024M;</span><br><span class="line"></span><br><span class="line">    location /my/ &#123;</span><br><span class="line">        proxy_pass http://my_server;</span><br><span class="line">        proxy_set_header Host $host:$server_port;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">那么，访问nginx地址http://10.0.0.1:80/my的请求会被转发到my_server服务地址http://10.0.0.2:8080/my。这是因为proxy_pass参数中如果不包含url的路径，则会将location的pattern识别的路径作为绝对路径。</span><br></pre></td></tr></table></figure>
+
+<h3 id="重定向报文代理"><a href="#重定向报文代理" class="headerlink" title="重定向报文代理"></a>重定向报文代理</h3><p>即便配置了 nginx 代理，当服务返回重定向报文时（http code 为 301 或 302），会将重定向的目标 url 地址放入 http response 报文的 header 的 location 字段内。用户浏览器收到重定向报文时，会解析出该字段并作跳转。此时新的请求报文将直接发送给服务地址，而非 nginx 地址。为了能让 nginx 拦截此类请求，必须修改重定向报文的 location 信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">location /my/ &#123;</span><br><span class="line">    proxy_pass http://my_server;</span><br><span class="line">    proxy_set_header Host $host:$server_port;</span><br><span class="line"></span><br><span class="line">    proxy_redirect / /my/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用 proxy_redirect 可以修改重定向报文的 location 字段，例子中会将所有的根路径下的 url 代理到 nginx 的&#x2F;my&#x2F;路径下返回给用户。比如服务返回的重定向报文的 location 原始值为&#x2F;login，那么经过 nginx 代理后，用户收到的报文的 location 字段为&#x2F;my&#x2F;login。此时，浏览器将会跳转到 nginx 的&#x2F;my&#x2F;login 地址进行访问。</p>
+<p>需要注意的是，服务返回的重定向报文的 location 字段有时会填写绝对路径（包含服务的 ip&#x2F;域名和端口），有时候会填写相对路径，此时需要根据实际情况进行甄别</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">location /my/ &#123;</span><br><span class="line">    proxy_pass http://my_server;</span><br><span class="line">    proxy_set_header Host $host:$server_port;</span><br><span class="line"></span><br><span class="line">    proxy_redirect http://my_server/ http://$host:$server_port/my/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述配置便是将 my_server 服务的根路径下的所有路径代理到 nginx 地址的&#x2F;my&#x2F;路径下。当 nginx 配置只有一个 server 时，<a href="http://host:server_port前缀可以省略。">http://host:server_port前缀可以省略。</a></p>
+<h3 id="报文数据替换"><a href="#报文数据替换" class="headerlink" title="报文数据替换"></a>报文数据替换</h3><p>使用 nginx 代理最牛（dan）逼（sui）的情况就是 http 响应报文内写死了服务地址或 web 绝对路径。写死服务地址的情况比较少见，但也偶尔存在。最棘手的是写死了 web 绝对路径，尤其是绝对路径都没有公共前缀。举个例子来说：</p>
+<p>一般的 web 页面会包含如下类似路径：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/public：用于静态页面资源，如js脚本/public/js，样式表/public/css，图片/public/img等</span><br><span class="line">/static：和/public类似</span><br><span class="line">/api：用于后台服务API接口</span><br><span class="line">/login：用于登录验证</span><br></pre></td></tr></table></figure>
+
+<p>对于这样的服务，可能的代理配置如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">location /my/ &#123;</span><br><span class="line">    proxy_pass http://my_server/;</span><br><span class="line">    proxy_set_header Host $host:$server_port;</span><br><span class="line"></span><br><span class="line">    proxy_redirect / /my/;</span><br><span class="line">&#125;</span><br><span class="line">location /login/ &#123;</span><br><span class="line">    proxy_pass http://my_server/public;</span><br><span class="line">    proxy_set_header Host $host:$server_port;</span><br><span class="line">&#125;</span><br><span class="line">location /public/ &#123;</span><br><span class="line">    proxy_pass http://my_server/public;</span><br><span class="line">    proxy_set_header Host $host:$server_port;</span><br><span class="line">&#125;</span><br><span class="line">location /api/ &#123;</span><br><span class="line">    proxy_pass http://my_server/api;</span><br><span class="line">    proxy_set_header Host $host:$server_port;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于 web 页面或静态资源内写死了类似的绝对路径，那么对于用户来说，通过页面内的链接进行跳转时，都会请求到 nginx 服务对应的路径上。一旦存在另一个服务也包含类似的路径，也需要 nginx 进行代理，那么矛盾就出现了：访问 nginx 的同一个路径下的请求究竟转发给哪一个服务？</p>
+<p>要解决这个问题，必须在用户收到报文前，将报文的数据中包含的绝对路径都添加统一的前缀，如&#x2F;my&#x2F;public，&#x2F;my&#x2F;api，&#x2F;my&#x2F;login，这样 nginx 代理配置则可以简化为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">location /my/ &#123;</span><br><span class="line">    proxy_pass http://my_server/;</span><br><span class="line">    proxy_set_header Host $host:$server_port;</span><br><span class="line"></span><br><span class="line">    proxy_redirect / /my/;</span><br><span class="line">&#125;</span><br><span class="line">location /other/ &#123;</span><br><span class="line">    proxy_pass http://other_server/;</span><br><span class="line">    proxy_set_header Host $host:$server_port;</span><br><span class="line"></span><br><span class="line">    proxy_redirect / /other/;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>nginx 的 ngx_http_sub_module 模块提供了类似的报文数据替换功能，该模块默认不会安装，需要在编译 nginx 时添加–with-http_sub_module 参数，或者直接下载 nginx 的 rpm 包。</p>
+<p>使用 sub_filter 对数据包进行替换的语法如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">location /my/ &#123;</span><br><span class="line">    proxy_pass http://my_server/;</span><br><span class="line">    proxy_set_header Host $host:$server_port;</span><br><span class="line"></span><br><span class="line">    sub_filter &#x27;href=&quot;/&#x27; &#x27;href=&quot;/my/&#x27;;</span><br><span class="line">    sub_filter &#x27;src=&quot;/&#x27; &#x27;src=&quot;/my/&#x27;;</span><br><span class="line">    sub_filter_types text/html;</span><br><span class="line">    sub_filter_once  off;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述配置会将&#x2F;my&#x2F;下的所有响应报文内容的 href&#x3D;”&#x2F;替换为 href&#x3D;”&#x2F;my，以及 src&#x3D;”&#x2F;替换为 src&#x3D;”&#x2F;my，即为所有的绝对路径添加公共前缀。</p>
+<p>注意，如果需要配置多个 sub_filter，必须保证 nginx 是 1.9.4 版本之上的。</p>
+<h3 id="一个简单的完整示例"><a href="#一个简单的完整示例" class="headerlink" title="一个简单的完整示例"></a>一个简单的完整示例</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">#user root owner;   #在mac中获取权限时需要将注释去掉</span><br><span class="line">worker_processes  2; #启动进程,通常设置成和cpu的数量相等</span><br><span class="line">events &#123;</span><br><span class="line">    worker_connections  1024; #单个后台worker process进程的最大并发链接数</span><br><span class="line">&#125;</span><br><span class="line">http &#123;</span><br><span class="line">    include       mime.types; #设定mime类型,类型由mime.type文件定义</span><br><span class="line">    default_type  application/octet-stream;</span><br><span class="line">    #sendfile 指令指定 nginx 是否调用 sendfile 函数（zero copy）来输出文件，对于普通应用，</span><br><span class="line">    #必须设为 on,如果用来进行下载等应用磁盘IO重负载应用，可设置为 off，以平衡磁盘与网络I/O处理速度，降低系统的uptime.</span><br><span class="line">    sendfile on;</span><br><span class="line">    keepalive_timeout  65; #连接超时时间</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 80; #侦听80端口</span><br><span class="line">        server_name localhost; # 定义使用www.xx.com访问</span><br><span class="line">        charset utf-8;</span><br><span class="line">        location / &#123;</span><br><span class="line">            root   html;</span><br><span class="line">            add_header Cache-Control no-store;</span><br><span class="line">            add_header &#x27;Access-Control-Allow-Origin&#x27; &#x27;*&#x27;;</span><br><span class="line">            index  index.html index.htm;</span><br><span class="line">        &#125;</span><br><span class="line">        location /request/ &#123;</span><br><span class="line">            root /;</span><br><span class="line">            proxy_set_header  Host $host; #请求主机头字段，否则为服务器名称。</span><br><span class="line">            proxy_headers_hash_max_size 1024; #存放http报文头的哈希表容量上限,默认为512个字符</span><br><span class="line">            proxy_headers_hash_bucket_size 128; #设置头部哈希表大小 默认为64</span><br><span class="line">            proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for ;</span><br><span class="line">            proxy_set_header Accept-Encoding &quot;&quot;;</span><br><span class="line">            proxy_pass http://localhost:8888/login/; #请求替换地址 例如要请求http://localhost:8888/login/ 也就是请求http://localhost/request/</span><br><span class="line">        &#125;</span><br><span class="line">        location ~ ^/html5/ &#123;</span><br><span class="line">            rewrite  /html5(.*)$ $1 break; #该指令根据表达式来重定向URI, 路径中存在/html5/的</span><br><span class="line">            expires -1; #缓存</span><br><span class="line">            root D:\html5; #前端静态文件物理路径 通过http://localhost/html5/来访问D盘html5下的文件夹</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="一个-React-类基于-History-模式路由的单页应用-nginx-配置"><a href="#一个-React-类基于-History-模式路由的单页应用-nginx-配置" class="headerlink" title="一个 React 类基于 History 模式路由的单页应用 nginx 配置"></a>一个 React 类基于 History 模式路由的单页应用 nginx 配置</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    # gzip config</span><br><span class="line">    gzip on;</span><br><span class="line">    gzip_min_length 1k;</span><br><span class="line">    gzip_comp_level 9;</span><br><span class="line">    gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript application/x-httpd-php image/jpeg image/gif image/png;</span><br><span class="line">    gzip_vary on;</span><br><span class="line">    gzip_disable &quot;MSIE [1-6]\.&quot;;</span><br><span class="line"></span><br><span class="line">    root /usr/share/nginx/html;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        # 用于配合 browserHistory使用</span><br><span class="line">        try_files $uri $uri/ /index.html;</span><br><span class="line"></span><br><span class="line">        # 如果有资源，建议使用 https + http2，配合按需加载可以获得更好的体验</span><br><span class="line">        # rewrite ^/(.*)$ https://preview.pro.ant.design/$1 permanent;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    //示例模板</span><br><span class="line">    location /api &#123;</span><br><span class="line">        proxy_pass https://ant-design-pro.netlify.com;</span><br><span class="line">        proxy_set_header   X-Forwarded-Proto $scheme;</span><br><span class="line">        proxy_set_header   X-Real-IP         $remote_addr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location /api &#123;</span><br><span class="line">        //实际配置中，带有前缀的api请求可能会需要配置rewrite，进行前缀的代理转发，实际应用中还可配置多个</span><br><span class="line">        rewrite ^.+api/?(.*)$ /$1 break;</span><br><span class="line">        proxy_pass http://192.168.50.55:9988;</span><br><span class="line">        proxy_set_header   X-Forwarded-Proto $scheme;</span><br><span class="line">        proxy_set_header   X-Real-IP         $remote_addr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location /gis &#123;</span><br><span class="line">        //实际配置中，带有前缀的api请求可能会需要配置rewrite，进行前缀的代理转发，实际应用中还可配置多个</span><br><span class="line">        rewrite ^.+gis/?(.*)$ /$1 break;</span><br><span class="line">        proxy_pass http://192.168.50.55:9988;</span><br><span class="line">        proxy_set_header   X-Forwarded-Proto $scheme;</span><br><span class="line">        proxy_set_header   X-Real-IP         $remote_addr;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">  # 如果有资源，建议使用 https + http2，配合按需加载可以获得更好的体验</span><br><span class="line">  listen 443 ssl http2 default_server;</span><br><span class="line"></span><br><span class="line">  # 证书的公私钥</span><br><span class="line">  ssl_certificate /path/to/public.crt;</span><br><span class="line">  ssl_certificate_key /path/to/private.key;</span><br><span class="line"></span><br><span class="line">  location / &#123;</span><br><span class="line">        # 用于配合 browserHistory使用</span><br><span class="line">        try_files $uri $uri/ /index.html;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">  location /api &#123;</span><br><span class="line">      proxy_pass https://ant-design-pro.netlify.com;</span><br><span class="line">      proxy_set_header   X-Forwarded-Proto $scheme;</span><br><span class="line">      proxy_set_header   Host              $http_host;</span><br><span class="line">      proxy_set_header   X-Real-IP         $remote_addr;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://infinityboy.github.io/2019/06/03/nginx%E5%B8%B8%E7%94%A8%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/" data-id="cli4airjt000zdcu15fnydn5p" data-title="nginx常用代理配置" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/03/WebGis%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          WebGis开发基础
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/03/nginx%E9%85%8D%E7%BD%AE%E4%B8%80%E4%B8%AA%E5%9B%BE%E7%89%87%E6%9C%8D%E5%8A%A1%E5%99%A8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">nginx配置一个图片服务器</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Mac/">Mac</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/">科学上网</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mapbox/" rel="tag">mapbox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webGis/" rel="tag">webGis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%AE%89%E5%85%A8/" rel="tag">web安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" rel="tag">杂七杂八</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JS/" style="font-size: 17.5px;">JS</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/Nginx/" style="font-size: 20px;">Nginx</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/mapbox/" style="font-size: 10px;">mapbox</a> <a href="/tags/vue/" style="font-size: 12.5px;">vue</a> <a href="/tags/webGis/" style="font-size: 10px;">webGis</a> <a href="/tags/web%E5%AE%89%E5%85%A8/" style="font-size: 12.5px;">web安全</a> <a href="/tags/%E5%8D%8F%E8%AE%AE/" style="font-size: 10px;">协议</a> <a href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" style="font-size: 17.5px;">杂七杂八</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 10px;">浏览器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/05/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">计算机网络基础</a>
+          </li>
+        
+          <li>
+            <a href="/2023/05/26/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/05/VUE-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/">VUE 移动端适配方案</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/ES6%E6%8A%80%E5%B7%A7/">ES6技巧</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Hakuna Matata<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

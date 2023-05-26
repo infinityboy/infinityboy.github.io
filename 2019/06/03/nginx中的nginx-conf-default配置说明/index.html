@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>nginx中的nginx.conf.default配置说明 | 太玄经</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本篇博客仅以个人学习记录使用  123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx中的nginx.conf.default配置说明">
+<meta property="og:url" content="https://infinityboy.github.io/2019/06/03/nginx%E4%B8%AD%E7%9A%84nginx-conf-default%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E/index.html">
+<meta property="og:site_name" content="太玄经">
+<meta property="og:description" content="本篇博客仅以个人学习记录使用  123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-06-03T13:00:07.000Z">
+<meta property="article:modified_time" content="2023-05-26T01:23:55.575Z">
+<meta property="article:author" content="Hakuna Matata">
+<meta property="article:tag" content="Nginx">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="太玄经" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0-rc1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">太玄经</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://infinityboy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-nginx中的nginx-conf-default配置说明" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/03/nginx%E4%B8%AD%E7%9A%84nginx-conf-default%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E/" class="article-date">
+  <time class="dt-published" datetime="2019-06-03T13:00:07.000Z" itemprop="datePublished">2019-06-03</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      nginx中的nginx.conf.default配置说明
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本篇博客仅以个人学习记录使用</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br></pre></td><td class="code"><pre><span class="line">#运行用户  </span><br><span class="line">user nobody;  </span><br><span class="line">#启动进程,通常设置成和cpu的数量相等  </span><br><span class="line">worker_processes  1;  </span><br><span class="line"></span><br><span class="line">#全局错误日志及PID文件  </span><br><span class="line">#error_log  logs/error.log;  </span><br><span class="line">#error_log  logs/error.log  notice;  </span><br><span class="line">#error_log  logs/error.log  info;  </span><br><span class="line"></span><br><span class="line">#pid        logs/nginx.pid;  </span><br><span class="line"></span><br><span class="line">#工作模式及连接数上限  </span><br><span class="line">events &#123;  </span><br><span class="line">    #epoll是多路复用IO(I/O Multiplexing)中的一种方式,  </span><br><span class="line">    #仅用于linux2.6以上内核,可以大大提高nginx的性能  </span><br><span class="line">    use   epoll;   </span><br><span class="line"></span><br><span class="line">    #单个后台worker process进程的最大并发链接数      </span><br><span class="line">    worker_connections  1024;  </span><br><span class="line"></span><br><span class="line">    # 并发总数是 worker_processes 和 worker_connections 的乘积  </span><br><span class="line">    # 即 max_clients = worker_processes * worker_connections  </span><br><span class="line">    # 在设置了反向代理的情况下，max_clients = worker_processes * worker_connections / 4  为什么  </span><br><span class="line">    # 为什么上面反向代理要除以4，应该说是一个经验值  </span><br><span class="line">    # 根据以上条件，正常情况下的Nginx Server可以应付的最大连接数为：4 * 8000 = 32000  </span><br><span class="line">    # worker_connections 值的设置跟物理内存大小有关  </span><br><span class="line">    # 因为并发受IO约束，max_clients的值须小于系统可以打开的最大文件数  </span><br><span class="line">    # 而系统可以打开的最大文件数和内存大小成正比，一般1GB内存的机器上可以打开的文件数大约是10万左右  </span><br><span class="line">    # 我们来看看360M内存的VPS可以打开的文件句柄数是多少：  </span><br><span class="line">    # $ cat /proc/sys/fs/file-max  </span><br><span class="line">    # 输出 34336  </span><br><span class="line">    # 32000 &lt; 34336，即并发连接总数小于系统可以打开的文件句柄总数，这样就在操作系统可以承受的范围之内  </span><br><span class="line">    # 所以，worker_connections 的值需根据 worker_processes 进程数目和系统可以打开的最大文件总数进行适当地进行设置  </span><br><span class="line">    # 使得并发总数小于操作系统可以打开的最大文件数目  </span><br><span class="line">    # 其实质也就是根据主机的物理CPU和内存进行配置  </span><br><span class="line">    # 当然，理论上的并发总数可能会和实际有所偏差，因为主机还有其他的工作进程需要消耗系统资源。  </span><br><span class="line">    # ulimit -SHn 65535  </span><br><span class="line"></span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http &#123;  </span><br><span class="line">    #设定mime类型,类型由mime.type文件定义  </span><br><span class="line">    include    mime.types;  </span><br><span class="line">    default_type  application/octet-stream;  </span><br><span class="line">    #设定日志格式  </span><br><span class="line">    log_format  main  &#x27;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &#x27;  </span><br><span class="line">                      &#x27;$status $body_bytes_sent &quot;$http_referer&quot; &#x27;  </span><br><span class="line">                      &#x27;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&#x27;;  </span><br><span class="line"></span><br><span class="line">    access_log  logs/access.log  main;  </span><br><span class="line"></span><br><span class="line">    #sendfile 指令指定 nginx 是否调用 sendfile 函数（zero copy 方式）来输出文件，  </span><br><span class="line">    #对于普通应用，必须设为 on,  </span><br><span class="line">    #如果用来进行下载等应用磁盘IO重负载应用，可设置为 off，  </span><br><span class="line">    #以平衡磁盘与网络I/O处理速度，降低系统的uptime.  </span><br><span class="line">    sendfile     on;  </span><br><span class="line">    #tcp_nopush     on;  </span><br><span class="line"></span><br><span class="line">    #连接超时时间  </span><br><span class="line">    #keepalive_timeout  0;  </span><br><span class="line">    keepalive_timeout  65;  </span><br><span class="line">    tcp_nodelay     on;  </span><br><span class="line"></span><br><span class="line">    #开启gzip压缩  </span><br><span class="line">    gzip  on;  </span><br><span class="line">    gzip_disable &quot;MSIE [1-6].&quot;;  </span><br><span class="line"></span><br><span class="line">    #设定请求缓冲  </span><br><span class="line">    client_header_buffer_size    128k;  </span><br><span class="line">    large_client_header_buffers  4 128k;  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    #设定虚拟主机配置  </span><br><span class="line">    server &#123;  </span><br><span class="line">        #侦听80端口  </span><br><span class="line">        listen    80;  </span><br><span class="line">        #定义使用 www.nginx.cn访问， 转发到哪个地址</span><br><span class="line">        server_name  www.nginx.cn;  </span><br><span class="line"></span><br><span class="line">        #定义服务器的默认网站根目录位置  </span><br><span class="line">        root html;  </span><br><span class="line"></span><br><span class="line">        #设定本虚拟主机的访问日志  </span><br><span class="line">        access_log  logs/nginx.access.log  main;  </span><br><span class="line"></span><br><span class="line">        #默认请求  </span><br><span class="line">        location / &#123;  </span><br><span class="line"></span><br><span class="line">            #定义首页索引文件的名称  </span><br><span class="line">            index index.php index.html index.htm;     </span><br><span class="line"></span><br><span class="line">        &#125;  </span><br><span class="line"></span><br><span class="line">        # 定义错误提示页面  </span><br><span class="line">        error_page   500 502 503 504 /50x.html;  </span><br><span class="line">        location = /50x.html &#123;  </span><br><span class="line">        &#125;  </span><br><span class="line"></span><br><span class="line">        #静态文件，nginx自己处理  </span><br><span class="line">        location ~ ^/(images|javascript|js|css|flash|media|static)/ &#123;  </span><br><span class="line"></span><br><span class="line">            #过期30天，静态文件不怎么更新，过期可以设大一点，  </span><br><span class="line">            #如果频繁更新，则可以设置得小一点。  </span><br><span class="line">            expires 30d;  </span><br><span class="line">        &#125;  </span><br><span class="line"></span><br><span class="line">        #PHP 脚本请求全部转发到 FastCGI处理. 使用FastCGI默认配置.  </span><br><span class="line">        location ~ .php$ &#123;  </span><br><span class="line">            fastcgi_pass 127.0.0.1:9000;  </span><br><span class="line">            fastcgi_index index.php;  </span><br><span class="line">            fastcgi_param  SCRIPT_FILENAME  $document_root$fastcgi_script_name;  </span><br><span class="line">            include fastcgi_params;  </span><br><span class="line">        &#125;  </span><br><span class="line"></span><br><span class="line">        #禁止访问 .htxxx 文件  </span><br><span class="line">            location ~ /.ht &#123;  </span><br><span class="line">            deny all;  </span><br><span class="line">        &#125;  </span><br><span class="line"></span><br><span class="line">    &#125;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://infinityboy.github.io/2019/06/03/nginx%E4%B8%AD%E7%9A%84nginx-conf-default%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E/" data-id="cli4airjr000sdcu1995wbv33" data-title="nginx中的nginx.conf.default配置说明" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/03/nginx%E9%85%8D%E7%BD%AE%E4%B8%80%E4%B8%AA%E5%9B%BE%E7%89%87%E6%9C%8D%E5%8A%A1%E5%99%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          nginx配置一个图片服务器
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/03/a%E6%A0%87%E7%AD%BEopener%E7%9A%84%E5%8D%B1%E9%99%A9/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">a标签opener的危险</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Mac/">Mac</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/">科学上网</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mapbox/" rel="tag">mapbox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webGis/" rel="tag">webGis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%AE%89%E5%85%A8/" rel="tag">web安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" rel="tag">杂七杂八</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JS/" style="font-size: 17.5px;">JS</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/Nginx/" style="font-size: 20px;">Nginx</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/mapbox/" style="font-size: 10px;">mapbox</a> <a href="/tags/vue/" style="font-size: 12.5px;">vue</a> <a href="/tags/webGis/" style="font-size: 10px;">webGis</a> <a href="/tags/web%E5%AE%89%E5%85%A8/" style="font-size: 12.5px;">web安全</a> <a href="/tags/%E5%8D%8F%E8%AE%AE/" style="font-size: 10px;">协议</a> <a href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" style="font-size: 17.5px;">杂七杂八</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 10px;">浏览器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/05/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">计算机网络基础</a>
+          </li>
+        
+          <li>
+            <a href="/2023/05/26/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/05/VUE-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/">VUE 移动端适配方案</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/ES6%E6%8A%80%E5%B7%A7/">ES6技巧</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Hakuna Matata<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

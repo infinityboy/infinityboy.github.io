@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>理解 cookie、session、token | 太玄经</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本篇博客仅以个人学习记录使用原文作者：墨颜丶原文链接：http:&#x2F;&#x2F;www.cnblogs.com&#x2F;moyand&#x2F;p&#x2F;9047978.html  long long ago!!!1.Web的功能就是用来浏览，鉴于此时Web的功力如此浅薄，服务器并不需要记录谁在某一段时间里都浏览了什么东西，每次请求都是一个新的HTTP协议，也不需要知道是谁发的请求，仅仅是发送请求然后进行响应.   Each re">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解 cookie、session、token">
+<meta property="og:url" content="https://infinityboy.github.io/2019/05/31/%E7%90%86%E8%A7%A3-cookie%E3%80%81session%E3%80%81token/index.html">
+<meta property="og:site_name" content="太玄经">
+<meta property="og:description" content="本篇博客仅以个人学习记录使用原文作者：墨颜丶原文链接：http:&#x2F;&#x2F;www.cnblogs.com&#x2F;moyand&#x2F;p&#x2F;9047978.html  long long ago!!!1.Web的功能就是用来浏览，鉴于此时Web的功力如此浅薄，服务器并不需要记录谁在某一段时间里都浏览了什么东西，每次请求都是一个新的HTTP协议，也不需要知道是谁发的请求，仅仅是发送请求然后进行响应.   Each re">
+<meta property="og:locale">
+<meta property="og:image" content="https://infinityboy.github.io/images/%E7%90%86%E8%A7%A3-cookie%E3%80%81session%E3%80%81token/640.webp">
+<meta property="og:image" content="https://infinityboy.github.io/images/%E7%90%86%E8%A7%A3-cookie%E3%80%81session%E3%80%81token/641.png">
+<meta property="og:image" content="https://infinityboy.github.io/images/%E7%90%86%E8%A7%A3-cookie%E3%80%81session%E3%80%81token/642.webp">
+<meta property="og:image" content="https://infinityboy.github.io/images/%E7%90%86%E8%A7%A3-cookie%E3%80%81session%E3%80%81token/643.webp">
+<meta property="og:image" content="https://infinityboy.github.io/images/%E7%90%86%E8%A7%A3-cookie%E3%80%81session%E3%80%81token/644.webp">
+<meta property="article:published_time" content="2019-05-31T05:29:54.000Z">
+<meta property="article:modified_time" content="2023-05-26T01:23:55.591Z">
+<meta property="article:author" content="Hakuna Matata">
+<meta property="article:tag" content="杂七杂八">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://infinityboy.github.io/images/%E7%90%86%E8%A7%A3-cookie%E3%80%81session%E3%80%81token/640.webp">
+  
+    <link rel="alternate" href="/atom.xml" title="太玄经" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0-rc1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">太玄经</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://infinityboy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-理解-cookie、session、token" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/05/31/%E7%90%86%E8%A7%A3-cookie%E3%80%81session%E3%80%81token/" class="article-date">
+  <time class="dt-published" datetime="2019-05-31T05:29:54.000Z" itemprop="datePublished">2019-05-31</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      理解 cookie、session、token
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本篇博客仅以个人学习记录使用<br>原文作者：墨颜丶<br>原文链接：<a href="http://www.cnblogs.com/moyand/p/9047978.html">http://www.cnblogs.com/moyand/p/9047978.html</a></p>
+</blockquote>
+<h3 id="long-long-ago"><a href="#long-long-ago" class="headerlink" title="long long ago!!!"></a>long long ago!!!</h3><p>1.Web的功能就是用来浏览，鉴于此时Web的功力如此浅薄，服务器并不需要记录谁在某一段时间里都浏览了什么东西，每次请求都是一个新的HTTP协议，也不需要知道是谁发的请求，仅仅是发送请求然后进行响应.   Each request is new!</p>
+<p>2.随着交互Web应用的流行，在线购物网站，需要登录的网站，vip用户，vvip用户，vvvip。。。等网站的到来，就产生了一个不得不面对的问题，我们必须要记住都有哪些人登录了系统，这时就需要对会话进行管理了。也就是说哪些人登录了系统，哪些人往自己的购物车中放商品，我们必须把每个人区分开。但是因为HTTP是无状态的协议，想利用HTTP去做区分是不现实的，这时就有一个聪明人，想到了一个办法，由服务器给大家发一个会话的标识(session id)，说白了就是一个随机字符串，每个人接收到的都不一样，每次浏览器发起HTTP请求的时候都要把这个字符串(session id)一并带过去，这样就能利用这个唯一的字符串区分赵钱孙李了。这时浏览器需要保存自己的这个session id 当然这对于浏览器来说简直是小case，但是对于服务器而言就是个大麻烦了，服务器需要保存所有的session id！！如果访问的人越来越多，就发展到成千上万个了，这对于服务器是一个很大的开销，严重的限制了服务器的扩展能力。这时我们把这些session id 放在了A服务器上，这时一个请求过来，通过这个服务器进行访问，当下一次这个请求又过来了，如果这时被分发到了B服务器，那么就访问不到了，因为这些session id 只在A服务器上，B服务器上并没有这些session id。这时可能会使用沾滞技术，使其一直请求的都是A服务器，但是如果A服务器宕机了，还是会转发到其他的服务器上，这个时候可能采取快照的方式，将这些session id来回的复制粘贴，在多个服务器之间搬来搬去，快累死了。。</p>
+<p><img src="/images/%E7%90%86%E8%A7%A3-cookie%E3%80%81session%E3%80%81token/640.webp"></p>
+<p>3.后来又把session id 集中存储到一个地方， 所有的机器都来访问这个地方的数据， 这样一来，就不用复制了， 但是增加了单点失败的可能性， 要是那个负责session 的机器挂了， 所有人都得重新登录一遍， 估计得被人骂死。</p>
+<p><img src="/images/%E7%90%86%E8%A7%A3-cookie%E3%80%81session%E3%80%81token/641.png"><br>也尝试把这个单点的机器也做成集群，增加可靠性，但是不管如何，小session终究还是负担。</p>
+<p>4.这时就有人思考，为什么要将session保存在服务器，只让每个客户端去保存不好么？？</p>
+<p>可是如果不保存这些session id , 怎么验证客户端发给我的session id 的确是我生成的呢？ 如果不去验证，我们都不知道他们是不是合法登录的用户， 那些不怀好意的家伙们就可以伪造session id , 为所欲为了。</p>
+<p>所以，所以，所以，关键点在于验证！！</p>
+<p>比如说老王登陆了系统，服务器给他发了一个令牌(token)，里边包含了老王的user_id，下一次老王再次通过HTTP请求访问的时候，把这个token带过去就可以了啊。但是这和session id本质上没有什么区别，任何人都可以伪造，必须得让别人伪造不了</p>
+<p>那就对数据做一个签名吧， 比如说我用HMAC-SHA256 算法，加上一个只有我才知道的密钥， 对数据做一个签名， 把这个签名和数据一起作为token ， 由于密钥别人不知道， 就无法伪造token了。</p>
+<p><img src="/images/%E7%90%86%E8%A7%A3-cookie%E3%80%81session%E3%80%81token/642.webp"></p>
+<p>这个token 服务器不保存， 当老王把这个token 给服务器发过去的时候，服务器再用同样的HMAC-SHA256 算法和同样的密钥，对数据再计算一次签名， 和token 中的签名做个比较， 如果相同， 我就知道老王已经登录过了，并且可以直接取到老王的user_id , 如果不相同， 数据部分肯定被人篡改过， 我就告诉发送者：对不起，没有认证。</p>
+<p><img src="/images/%E7%90%86%E8%A7%A3-cookie%E3%80%81session%E3%80%81token/643.webp"></p>
+<p>Token 中的数据是明文保存的（虽然会用Base64做下编码， 但那不是加密）， 还是可以被别人看到的， 所以不能在其中保存像密码这样的敏感信息。</p>
+<p>当然， 如果一个人的token 被别人偷走了， 那也没办法， 也仍然会认为小偷就是合法用户， 这其实和一个人的session id 被别人偷走是一样的。</p>
+<p>这样一来， 服务器就不需要保存session id 了， 服务器只是生成token , 然后验证token ， 然后用CPU计算时间解放了session 存储空间 ！</p>
+<p>解除了session id这个负担， 可以说是无事一身轻， 服务器的机器集群现在可以轻松地做水平扩展， 用户访问量增大， 直接加机器就行。这种无状态的感觉实在是太好了！</p>
+<h3 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h3><p>cookie 是一个非常具体的东西，指的就是浏览器里面能永久存储的一种数据，仅仅是浏览器实现的一种数据存储功能。</p>
+<p>cookie由服务器生成，发送给浏览器，浏览器把cookie以kv形式保存到某个目录下的文本文件内，下一次请求同一网站时会把该cookie发送给服务器。由于cookie是存在客户端上的，所以浏览器加入了一些限制确保cookie不会被恶意使用，同时不会占据太多磁盘空间，所以每个域的cookie数量是有限的。</p>
+<h3 id="session"><a href="#session" class="headerlink" title="session"></a>session</h3><p>session 从字面上讲，就是会话。这个就类似于你和一个人交谈，你怎么知道当前和你交谈的是张三而不是李四呢？对方肯定有某种特征（长相等）表明他就是张三。</p>
+<p>session 也是类似的道理，服务器要知道当前发请求给自己的是谁。为了做这种区分，服务器就要给每个客户端分配不同的“身份标识”，然后客户端每次向服务器发请求的时候，都带上这个“身份标识”，服务器就知道这个请求来自于谁了。至于客户端怎么保存这个“身份标识”，可以有很多种方式，对于浏览器客户端，大家都默认采用 cookie 的方式。</p>
+<p>服务器使用session把用户的信息临时保存在了服务器上，用户离开网站后session会被销毁。这种用户信息存储方式相对cookie来说更安全，可是session有一个缺陷：如果web服务器做了负载均衡，那么下一个操作请求到了另一台服务器的时候session会丢失。（所以一般都会做session复制，同步等措施）</p>
+<h3 id="Token"><a href="#Token" class="headerlink" title="Token"></a>Token</h3><p>在Web领域基于Token的身份验证随处可见。在大多数使用Web API的互联网公司中，tokens 是多用户下处理认证的最佳方式。</p>
+<p>以下几点特性会让你在程序中使用基于Token的身份验证</p>
+<pre><code>1.无状态、可扩展
+2.支持移动设备
+3.跨程序调用
+4.安全
+</code></pre>
+<p>大部分你见到过的API和Web应用都使用tokens。例如Facebook, Twitter, Google+, GitHub等。</p>
+<h4 id="Token的起源"><a href="#Token的起源" class="headerlink" title="Token的起源"></a>Token的起源</h4><p>在介绍基于Token的身份验证原理与优势之前，不妨先看看之前的认证都是怎么做的。</p>
+<h4 id="基于服务器的验证："><a href="#基于服务器的验证：" class="headerlink" title="基于服务器的验证："></a>基于服务器的验证：</h4><p>我们都是知道HTTP协议是无状态的，这种无状态意味着程序需要验证每一次请求，从而辨别客户端的身份。</p>
+<p>在这之前，程序都是通过在服务端存储的登录信息来辨别请求的。这种方式一般都是通过存储Session来完成。</p>
+<p>随着Web，应用程序，已经移动端的兴起，这种验证的方式逐渐暴露出了问题。尤其是在可扩展性方面。</p>
+<h4 id="基于服务器验证方式暴露的一些问题："><a href="#基于服务器验证方式暴露的一些问题：" class="headerlink" title="基于服务器验证方式暴露的一些问题："></a>基于服务器验证方式暴露的一些问题：</h4><p>1.Seesion：每次认证用户发起请求时，服务器需要去创建一个记录来存储信息。当越来越多的用户发请求时，内存的开销也会不断增加。</p>
+<p>2.可扩展性：在服务端的内存中使用Seesion存储登录信息，伴随而来的是可扩展性问题。</p>
+<p>3.CORS(跨域资源共享)：当我们需要让数据跨多台移动设备上使用时，跨域资源的共享会是一个让人头疼的问题。在使用Ajax抓取另一个域的资源，就可以会出现禁止请求的情况。</p>
+<p>4.CSRF(跨站请求伪造)：用户在访问银行网站时，他们很容易受到跨站请求伪造的攻击，并且能够被利用其访问其他的网站。</p>
+<p>在这些问题中，可扩展性是最突出的。因此我们有必要去寻求一种更有行之有效的方法。</p>
+<h4 id="基于Token的验证原理："><a href="#基于Token的验证原理：" class="headerlink" title="基于Token的验证原理："></a>基于Token的验证原理：</h4><p>基于Token的身份验证是无状态的，我们不将用户信息存在服务器或Session中。</p>
+<p>这种概念解决了在服务端存储信息时的许多问题</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NoSession意味着你的程序可以根据需要去增减机器，而不用去担心用户是否登录。</span><br></pre></td></tr></table></figure>
+
+<p>基于Token的身份验证的过程如下:</p>
+<p>1.用户通过用户名和密码发送请求。<br>2.程序验证。<br>3.程序返回一个签名的token 给客户端。<br>4.客户端储存token,并且每次用于每次发送请求。<br>5.服务端验证token并返回数据。</p>
+<p>每一次请求都需要token。token应该在HTTP的头部发送从而保证了Http请求无状态。我们同样通过设置服务器属性Access-Control-Allow-Origin:* ，让服务器能接受到来自所有域的请求。</p>
+<p>需要注意的是，在ACAO头部标明(designating)*时，不得带有像HTTP认证，客户端SSL证书和cookies的证书。</p>
+<p>实现思路：</p>
+<p><img src="/images/%E7%90%86%E8%A7%A3-cookie%E3%80%81session%E3%80%81token/644.webp"></p>
+<p>1.用户登录校验，校验成功后就返回Token给客户端。<br>2.客户端收到数据后保存在客户端<br>3.客户端每次访问API是携带Token到服务器端。<br>4.服务器端采用filter过滤器校验。校验成功则返回请求数据，校验失败则返回错误码</p>
+<p>当我们在程序中认证了信息并取得token之后，我们便能通过这个Token做许多的事情。</p>
+<p>我们甚至能基于创建一个基于权限的token传给第三方应用程序，这些第三方程序能够获取到我们的数据（当然只有在我们允许的特定的token）</p>
+<h3 id="Tokens的优势"><a href="#Tokens的优势" class="headerlink" title="Tokens的优势"></a>Tokens的优势</h3><h4 id="无状态、可扩展"><a href="#无状态、可扩展" class="headerlink" title="无状态、可扩展"></a>无状态、可扩展</h4><p>在客户端存储的Tokens是无状态的，并且能够被扩展。基于这种无状态和不存储Session信息，负载负载均衡器能够将用户信息从一个服务传到其他服务器上。</p>
+<p>如果我们将已验证的用户的信息保存在Session中，则每次请求都需要用户向已验证的服务器发送验证信息(称为Session亲和性)。用户量大时，可能会造成一些拥堵。</p>
+<p>但是不要着急。使用tokens之后这些问题都迎刃而解，因为tokens自己hold住了用户的验证信息。</p>
+<h4 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h4><p>请求中发送token而不再是发送cookie能够防止CSRF(跨站请求伪造)。即使在客户端使用cookie存储token，cookie也仅仅是一个存储机制而不是用于认证。不将信息存储在Session中，让我们少了对session操作。</p>
+<p>token是有时效的，一段时间之后用户需要重新验证。我们也不一定需要等到token自动失效，token有撤回的操作，通过token revocataion可以使一个特定的token或是一组有相同认证的token无效。</p>
+<h4 id="可扩展性"><a href="#可扩展性" class="headerlink" title="可扩展性"></a>可扩展性</h4><p>Tokens能够创建与其它程序共享权限的程序。例如，能将一个随便的社交帐号和自己的大号(Fackbook或是Twitter)联系起来。当通过服务登录Twitter(我们将这个过程Buffer)时，我们可以将这些Buffer附到Twitter的数据流上(we are allowing Buffer to post to our Twitter stream)。</p>
+<p>使用tokens时，可以提供可选的权限给第三方应用程序。当用户想让另一个应用程序访问它们的数据，我们可以通过建立自己的API，得出特殊权限的tokens。</p>
+<h4 id="多平台跨域"><a href="#多平台跨域" class="headerlink" title="多平台跨域"></a>多平台跨域</h4><p>我们提前先来谈论一下CORS(跨域资源共享)，对应用程序和服务进行扩展的时候，需要介入各种各种的设备和应用程序。</p>
+<blockquote>
+<p>Having our API just serve data, we can also make the design choice to serve assets from a CDN. This eliminates the issues that CORS brings up after we set a quick header configuration for our application.</p>
+</blockquote>
+<p>只要用户有一个通过了验证的token，数据和资源就能够在任何域上被请求到。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Access-Control-Allow-Origin: *      </span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://infinityboy.github.io/2019/05/31/%E7%90%86%E8%A7%A3-cookie%E3%80%81session%E3%80%81token/" data-id="cli4airjy001rdcu1czsna0uh" data-title="理解 cookie、session、token" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" rel="tag">杂七杂八</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/01/vue-%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          vue 权限管理
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Mac/">Mac</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/">科学上网</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mapbox/" rel="tag">mapbox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webGis/" rel="tag">webGis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%AE%89%E5%85%A8/" rel="tag">web安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" rel="tag">杂七杂八</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JS/" style="font-size: 17.5px;">JS</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/Nginx/" style="font-size: 20px;">Nginx</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/mapbox/" style="font-size: 10px;">mapbox</a> <a href="/tags/vue/" style="font-size: 12.5px;">vue</a> <a href="/tags/webGis/" style="font-size: 10px;">webGis</a> <a href="/tags/web%E5%AE%89%E5%85%A8/" style="font-size: 12.5px;">web安全</a> <a href="/tags/%E5%8D%8F%E8%AE%AE/" style="font-size: 10px;">协议</a> <a href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" style="font-size: 17.5px;">杂七杂八</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 10px;">浏览器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/05/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">计算机网络基础</a>
+          </li>
+        
+          <li>
+            <a href="/2023/05/26/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/05/VUE-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/">VUE 移动端适配方案</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/ES6%E6%8A%80%E5%B7%A7/">ES6技巧</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Hakuna Matata<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

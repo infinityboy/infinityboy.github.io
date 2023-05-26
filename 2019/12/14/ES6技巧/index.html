@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>ES6技巧 | 太玄经</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本篇博客仅以个人学习记录使用原文链接: https:&#x2F;&#x2F;www.h5jun.com&#x2F;post&#x2F;six-nifty-es6-tricks.html  通过参数默认值强制要求传参ES6 指定默认参数在它们被实际使用的时候才会被执行，这个特性让我们可以强制要求传参： 12345678910&#x2F;*** Called if a parameter is missing and* the default va">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ES6技巧">
+<meta property="og:url" content="https://infinityboy.github.io/2019/12/14/ES6%E6%8A%80%E5%B7%A7/index.html">
+<meta property="og:site_name" content="太玄经">
+<meta property="og:description" content="本篇博客仅以个人学习记录使用原文链接: https:&#x2F;&#x2F;www.h5jun.com&#x2F;post&#x2F;six-nifty-es6-tricks.html  通过参数默认值强制要求传参ES6 指定默认参数在它们被实际使用的时候才会被执行，这个特性让我们可以强制要求传参： 12345678910&#x2F;*** Called if a parameter is missing and* the default va">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-12-14T06:39:05.000Z">
+<meta property="article:modified_time" content="2023-05-26T01:23:55.575Z">
+<meta property="article:author" content="Hakuna Matata">
+<meta property="article:tag" content="JS">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="太玄经" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0-rc1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">太玄经</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://infinityboy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-ES6技巧" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/14/ES6%E6%8A%80%E5%B7%A7/" class="article-date">
+  <time class="dt-published" datetime="2019-12-14T06:39:05.000Z" itemprop="datePublished">2019-12-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      ES6技巧
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本篇博客仅以个人学习记录使用<br>原文链接: <a href="https://www.h5jun.com/post/six-nifty-es6-tricks.html">https://www.h5jun.com/post/six-nifty-es6-tricks.html</a></p>
+</blockquote>
+<h3 id="通过参数默认值强制要求传参"><a href="#通过参数默认值强制要求传参" class="headerlink" title="通过参数默认值强制要求传参"></a>通过参数默认值强制要求传参</h3><p>ES6 指定默认参数在它们被实际使用的时候才会被执行，这个特性让我们可以强制要求传参：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">* Called if a parameter is missing and</span><br><span class="line">* the default value is evaluated.</span><br><span class="line">*/</span><br><span class="line">function mandatory() &#123;</span><br><span class="line">    throw new Error(&quot;Missing parameter&quot;);</span><br><span class="line">&#125;</span><br><span class="line">function foo(mustBeProvided = mandatory()) &#123;</span><br><span class="line">    return mustBeProvided;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数调用 mandatory() 只有在参数 mustBeProvided 缺失的时候才会被执行。<br>在控制台测试:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; foo()</span><br><span class="line">Error: Missing parameter</span><br><span class="line">&gt; foo(123)</span><br><span class="line">123</span><br></pre></td></tr></table></figure>
+<p>更多内容:<br>段落： <a href="https://exploringjs.com/es6/ch_parameter-handling.html#_required-parameters">“Required parameters”</a> 。</p>
+<h3 id="通过-for-of-循环来遍历数组元素和索引"><a href="#通过-for-of-循环来遍历数组元素和索引" class="headerlink" title="通过 for-of 循环来遍历数组元素和索引"></a>通过 for-of 循环来遍历数组元素和索引</h3><p>方法 forEach() 允许你遍历一个数组的元素和索引：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var arr = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;];</span><br><span class="line">arr.forEach(function (elem, index) &#123;</span><br><span class="line">    console.log(&quot;index = &quot;+index+&quot;, elem = &quot;+elem);</span><br><span class="line">&#125;);</span><br><span class="line">// Output:</span><br><span class="line">// index = 0, elem = a</span><br><span class="line">// index = 1, elem = b</span><br><span class="line">// index = 2, elem = c</span><br></pre></td></tr></table></figure>
+<p>ES6 的 for-of 循环支持 ES6 迭代（通过 iterables 和 iterators）和解构。如果你通过数组的新方法 enteries() 再结合解构，可以达到上面 forEach 同样的效果：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const arr = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;];</span><br><span class="line">for (const [index, elem] of arr.entries()) &#123;</span><br><span class="line">    console.log(`index = $&#123;index&#125;, elem = $&#123;elem&#125;`);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>arr.enteries() 通过索引-元素配对返回一个可迭代对象。然后通过解构数组 [index, elem] 直接得到每一对元素和索引。console.log() 的参数是 ES6 中的模板字面量特性，这个特性带给字符串解析模板变量的能力。<br>更多内容:<br>章节： <a href="https://exploringjs.com/es6/ch_destructuring.html">“Destructuring”</a> 。<br>章节： <a href="https://exploringjs.com/es6/ch_iteration.html">“Iterables and iterators”</a>。<br>段落： <a href="https://exploringjs.com/es6/ch_iteration.html">“Iterating with a destructuring pattern”</a> 。<br>章节： <a href="https://exploringjs.com/es6/ch_template-literals.html">“Template literals”</a> 。</p>
+<h3 id="遍历-Unicode-表示的字符串"><a href="#遍历-Unicode-表示的字符串" class="headerlink" title="遍历 Unicode 表示的字符串"></a>遍历 Unicode 表示的字符串</h3><p>一些 Unicode 编码的字由两个 JavaScript 字符组成，例如，emoji 表情：<br><img src="data:image/png;base64,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"><br>字符串实现了 ES6 迭代，如果你通过迭代来访问字符串，你可以获得编码过的单个字（每个字用 1 或 2 个 JavaScript 字符表示）。例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for (const ch of &quot;x\uD83D\uDE80y&quot;) &#123;</span><br><span class="line">    console.log(ch.length);</span><br><span class="line">&#125;</span><br><span class="line">// Output:</span><br><span class="line">// 1</span><br><span class="line">// 2</span><br><span class="line">// 1</span><br></pre></td></tr></table></figure>
+<p>这让你能够很方便地得到一个字符串中实际的字数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; [...&quot;x\uD83D\uDE80y&quot;].length</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+<p>展开操作符 (…) 将它的操作对象展开并插入数组。<br>更多内容：<br>章节： <a href="https://exploringjs.com/es6/ch_unicode.html">“Unicode in ES6”</a> 。<br>段落： <a href="https://exploringjs.com/es6/ch_parameter-handling.html#sec_spread-operator">“The spread operator (…)”</a> 。</p>
+<h3 id="通过变量解构交换两个变量的值"><a href="#通过变量解构交换两个变量的值" class="headerlink" title="通过变量解构交换两个变量的值"></a>通过变量解构交换两个变量的值</h3><p>如果你将一对变量放入一个数组，然后将数组解构赋值相同的变量（顺序不同），你就可以不依赖中间变量交换两个变量的值：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[a, b] = [b, a];</span><br></pre></td></tr></table></figure>
+<p>可以想象，JavaScript 引擎在未来将会针对这个模式进行特别优化，去掉构造数组的开销。<br>更多内容:<br>章节: <a href="https://exploringjs.com/es6/ch_destructuring.html">“Destructuring”</a></p>
+<h3 id="通过模板字面量（template-literals）进行简单的模板解析"><a href="#通过模板字面量（template-literals）进行简单的模板解析" class="headerlink" title="通过模板字面量（template literals）进行简单的模板解析"></a>通过模板字面量（template literals）进行简单的模板解析</h3><p>ES6 的模板字面量与文字模板相比，更接近于字符串字面量。但是，如果你将它们通过函数返回，你可以使用他们来做简单的模板渲染：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">const tmpl = addrs =&gt; `</span><br><span class="line">    &lt;table&gt;</span><br><span class="line">    $&#123;addrs.map(addr =&gt; `</span><br><span class="line">        &lt;tr&gt;&lt;td&gt;$&#123;addr.first&#125;&lt;/td&gt;&lt;/tr&gt;</span><br><span class="line">        &lt;tr&gt;&lt;td&gt;$&#123;addr.last&#125;&lt;/td&gt;&lt;/tr&gt;</span><br><span class="line">    `).join(&quot;&quot;)&#125;</span><br><span class="line">    &lt;/table&gt;</span><br><span class="line">`;</span><br></pre></td></tr></table></figure>
+<p>tmpl 函数将数组 addrs 用 map（通过箭头函数） join 拼成字符串。tmpl() 可以批量插入数据到表格中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">const data = [</span><br><span class="line">    &#123; first: &quot;&lt;Jane&gt;&quot;, last: &quot;Bond&quot; &#125;,</span><br><span class="line">    &#123; first: &quot;Lars&quot;, last: &quot;&lt;Croft&gt;&quot; &#125;,</span><br><span class="line">];</span><br><span class="line">console.log(tmpl(data));</span><br><span class="line">// Output:</span><br><span class="line">// &lt;table&gt;</span><br><span class="line">//</span><br><span class="line">//     &lt;tr&gt;&lt;td&gt;&lt;Jane&gt;&lt;/td&gt;&lt;/tr&gt;</span><br><span class="line">//     &lt;tr&gt;&lt;td&gt;Bond&lt;/td&gt;&lt;/tr&gt;</span><br><span class="line">//</span><br><span class="line">//     &lt;tr&gt;&lt;td&gt;Lars&lt;/td&gt;&lt;/tr&gt;</span><br><span class="line">//     &lt;tr&gt;&lt;td&gt;&lt;Croft&gt;&lt;/td&gt;&lt;/tr&gt;</span><br><span class="line">//</span><br><span class="line">// &lt;/table&gt;</span><br></pre></td></tr></table></figure>
+<p>更多内容:<br>博客文章: <a href="http://www.2ality.com/2016/05/template-literal-whitespace.html">“Handling whitespace in ES6 template literals”</a><br>段落: <a href="https://exploringjs.com/es6/ch_template-literals.html#_text-templating-via-untagged-template-literals">“Text templating via untagged template literals”</a><br>章节: <a href="http://exploringjs.com/es6/ch_arrow-functions.html">“Arrow functions”</a></p>
+<h3 id="通过子类工厂实现简单的合成器"><a href="#通过子类工厂实现简单的合成器" class="headerlink" title="通过子类工厂实现简单的合成器"></a>通过子类工厂实现简单的合成器</h3><p>当 ES6 类继承另一个类，被继承的类可以是通过任意表达式创建的动态类：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// Function id() simply returns its parameter</span><br><span class="line">const id = x =&gt; x;</span><br><span class="line"></span><br><span class="line">class Foo extends id(Object) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>这个特性可以允许你实现一种合成器模式，用一个函数来将一个类 C 映射到一个新的继承了C的类。例如，下面的两个函数 Storage 和 Validation 是合成器：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const Storage = Sup =&gt; class extends Sup &#123;</span><br><span class="line">    save(database) &#123; ··· &#125;</span><br><span class="line">&#125;;</span><br><span class="line">const Validation = Sup =&gt; class extends Sup &#123;</span><br><span class="line">    validate(schema) &#123; ··· &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>你可以使用它们去组合生成一个如下的 Employee 类：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123; ··· &#125;</span><br><span class="line">class Employee extends Storage(Validation(Person)) &#123; ··· &#125;</span><br></pre></td></tr></table></figure>
+<p>更多内容:<br>段落: <a href="https://exploringjs.com/es6/ch_classes.html#_simple-mixins">“Simple mixins”</a></p>
+<h3 id="进一步阅读"><a href="#进一步阅读" class="headerlink" title="进一步阅读"></a>进一步阅读</h3><p>下面的两个章节提供了很好地概括了 ECMAScript 6 的特性：<br><a href="https://exploringjs.com/es6/ch_overviews.html">“An overview of what’s new in ES6”</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://infinityboy.github.io/2019/12/14/ES6%E6%8A%80%E5%B7%A7/" data-id="cli4airjj0007dcu119tqhnqp" data-title="ES6技巧" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/" rel="tag">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/02/05/VUE-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          VUE 移动端适配方案
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/12/14/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">函数式编程</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Mac/">Mac</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/">科学上网</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mapbox/" rel="tag">mapbox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webGis/" rel="tag">webGis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%AE%89%E5%85%A8/" rel="tag">web安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" rel="tag">杂七杂八</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JS/" style="font-size: 17.5px;">JS</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/Nginx/" style="font-size: 20px;">Nginx</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/mapbox/" style="font-size: 10px;">mapbox</a> <a href="/tags/vue/" style="font-size: 12.5px;">vue</a> <a href="/tags/webGis/" style="font-size: 10px;">webGis</a> <a href="/tags/web%E5%AE%89%E5%85%A8/" style="font-size: 12.5px;">web安全</a> <a href="/tags/%E5%8D%8F%E8%AE%AE/" style="font-size: 10px;">协议</a> <a href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" style="font-size: 17.5px;">杂七杂八</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 10px;">浏览器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/05/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">计算机网络基础</a>
+          </li>
+        
+          <li>
+            <a href="/2023/05/26/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/05/VUE-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/">VUE 移动端适配方案</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/ES6%E6%8A%80%E5%B7%A7/">ES6技巧</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Hakuna Matata<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

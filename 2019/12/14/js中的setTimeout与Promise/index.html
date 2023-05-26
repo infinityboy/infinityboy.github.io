@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>js中的setTimeout与Promise | 太玄经</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本篇博客仅以个人学习记录使用  介绍Promise 是在 ES5 之后出现的，这是属于 JavaScript 引擎本身的能力，由 JavaScript 引擎发起的任务被称作微观任务。Promise 是 JavaScript 语言提供的一种标准化的异步管理方式，当需要 IO、等待或者其他异步操作的函数，不直接返回真实结果，而返回一个 Promise,函数的调用方可以在合适的时机，选择等待这个 Pr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="js中的setTimeout与Promise">
+<meta property="og:url" content="https://infinityboy.github.io/2019/12/14/js%E4%B8%AD%E7%9A%84setTimeout%E4%B8%8EPromise/index.html">
+<meta property="og:site_name" content="太玄经">
+<meta property="og:description" content="本篇博客仅以个人学习记录使用  介绍Promise 是在 ES5 之后出现的，这是属于 JavaScript 引擎本身的能力，由 JavaScript 引擎发起的任务被称作微观任务。Promise 是 JavaScript 语言提供的一种标准化的异步管理方式，当需要 IO、等待或者其他异步操作的函数，不直接返回真实结果，而返回一个 Promise,函数的调用方可以在合适的时机，选择等待这个 Pr">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-12-14T00:34:48.000Z">
+<meta property="article:modified_time" content="2023-05-26T01:23:55.575Z">
+<meta property="article:author" content="Hakuna Matata">
+<meta property="article:tag" content="JS">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="太玄经" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0-rc1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">太玄经</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://infinityboy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-js中的setTimeout与Promise" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/12/14/js%E4%B8%AD%E7%9A%84setTimeout%E4%B8%8EPromise/" class="article-date">
+  <time class="dt-published" datetime="2019-12-14T00:34:48.000Z" itemprop="datePublished">2019-12-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      js中的setTimeout与Promise
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本篇博客仅以个人学习记录使用</p>
+</blockquote>
+<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>Promise 是在 ES5 之后出现的，这是属于 JavaScript 引擎本身的能力，由 JavaScript 引擎发起的任务被称作微观任务。Promise 是 JavaScript 语言提供的一种标准化的异步管理方式，当需要 IO、等待或者其他异步操作的函数，不直接返回真实结果，而返回一个 Promise,<br>函数的调用方可以在合适的时机，选择等待这个 Promise 兑现（通过 Promise 的 then 方法的回调）</p>
+<p>Promise 的基本用法示例如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function sleep(duration) &#123;</span><br><span class="line">    return new Promise(function(resolve, reject)) &#123;</span><br><span class="line">        setTimeout(resolve,duration);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">sleep(1000).then( () =&gt; console.log(&#x27;完成&#x27;))</span><br></pre></td></tr></table></figure>
+
+<p>Promise 的 then 回调是一个异步的执行过程，下面来研究一下 Promise 函数中的执行顺序：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">let r = new Promise(function(resolve.reject) &#123;</span><br><span class="line">    console.log(&quot;a&quot;);</span><br><span class="line">    resolve();</span><br><span class="line">&#125;);</span><br><span class="line">r.then( () =&gt; console.log(&quot;c&quot;));</span><br><span class="line">console.log(&quot;b&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>执行这段代码之后，输出的顺序是 a,b,c。在进入 cpnsole.log(b)之前，毫无疑问 r 已经得到了 resolve,但是 Promise 的 resolve 始终是异步操作，所以 c 无法出现在 b 之前。</p>
+<p>setTimeout 是浏览器的 api，是在 window 下的，是宿主环境中的，他被称作宏观任务。</p>
+<p>那么，如果将 setTimeout 混用 Promise 会怎样呢？？</p>
+<p>在下面的代码中，设置了两段互不相干的异步操作：通过 setTimeout 执行 console.log(“d”),通过 Promise 执行 console.log(“c”).</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">let r = new Promise(function(resolve,reject) &#123;</span><br><span class="line">    console.log(&quot;a&quot;);</span><br><span class="line">    resolve()</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">setTimeout( () =&gt; console.log(&quot;d&quot;))</span><br><span class="line"></span><br><span class="line">r.then( () =&gt; console.log(&quot;c&quot;))</span><br><span class="line">console.log(&quot;b&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>不论代码顺序如何，d 必定发生在 c 之后，因为 Promise 产生的是 JavaScript 引擎内部的微任务，而 setTimeout 是浏览器 api,它产生宏任务，而微任务始终优先于宏任务。举例代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">setTimeout( () =&gt; console.log(&quot;d&quot;), 0)</span><br><span class="line">let r = new Promise(function(resolve,reject)&#123;</span><br><span class="line">    resolve()</span><br><span class="line">&#125;);</span><br><span class="line">r.then(() =&gt; &#123;</span><br><span class="line">    let begin = Date.now();</span><br><span class="line">    while(Date.now() - begin &lt; 1000);</span><br><span class="line">    console.log(&quot;c1&quot;)</span><br><span class="line">    new Promise(function(resolve,reject) &#123;</span><br><span class="line">        resolve();</span><br><span class="line">    &#125;).then( () =&gt; console.log(&quot;c2&quot;));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>以上代码强制了 1 秒的执行耗时，这样，可以确保任务 c2 是在 d 之后被添加到任务队列。但是即便是这样，先执行了 c1,由执行了 c2,d 仍然是最后执行的，这就很好的解释了微任务优先的原理。</p>
+<p>通过以上的分析，总结一下如何分析异步执行的顺序： 1.首先分析有多少个宏观任务； 2.在每个宏观任务中，分析有多少个微观任务； 3.根据调用次序，确定宏任务中的微任务执行次序； 4.根据宏任务的触发规则和调用次序，确定宏任务的执行次序； 5.确定整个顺序。</p>
+<p>这是一个稍微复杂的例子;</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function sleep(duration) &#123;</span><br><span class="line">    return new Promise(function(resolve,reject) &#123;</span><br><span class="line">        console.log(&quot;b&quot;);</span><br><span class="line">        setTimeout(resolve,duration);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line">console.log(&quot;a&quot;);</span><br><span class="line">sleep(5000).then( () =&gt; console.log(&quot;C&quot;));</span><br></pre></td></tr></table></figure>
+
+<p>这是一段分非常常用的封装方法，利用 Promise 把 setTimeout 封装成可以用于异步的函数。我们首先来看，setTimeout 把整个代码分割成了 2 个宏观任务，这里不论是 5 秒还是 0 秒，都是一样的。第一个宏观任务中，包含了先后同步执行的 console.log(“a”);和 console.log(“b”)<br>setTimeout 后，第二个宏观任务执行调用了 resolve，然后 then 中的代码异步得到执行，所以调用了 console.log(“c”),最终输出的顺序才是 a,b,c.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(function() &#123;</span><br><span class="line">	console.log(1);</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">new Promise(function(resolve, reject) &#123;</span><br><span class="line">    console.log(2);</span><br><span class="line">    resolve(3)</span><br><span class="line">&#125;).then((res) =&gt; &#123;</span><br><span class="line">    console.log(res)</span><br><span class="line">&#125;)</span><br><span class="line">console.log(4);</span><br><span class="line"></span><br><span class="line">2</span><br><span class="line">4</span><br><span class="line">3</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+
+<p>原因：<br>首先 setTimeout 会在下一轮时间循环执行，所以不会当时就打印。<br>Promise 对象在实例的时候其实就已经执行了内部的代码，所以 2 首先打印了。<br>Promise.then() 在本轮事件循环结束之后执行，所以 3 会在 4 之后打印。<br>本轮事件循环结束，开始下一循环打印 setTimeout 中的 1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"> async function async1() &#123;</span><br><span class="line">            console.log(&quot;async1 start&quot;);</span><br><span class="line">            await  async2();</span><br><span class="line">            console.log(&quot;async1 end&quot;);</span><br><span class="line"> </span><br><span class="line">        &#125;</span><br><span class="line">        async  function async2() &#123;</span><br><span class="line">           console.log( &#x27;async2&#x27;);</span><br><span class="line">        &#125;</span><br><span class="line">        console.log(&quot;script start&quot;);</span><br><span class="line">        setTimeout(function () &#123;</span><br><span class="line">            console.log(&quot;settimeout&quot;);</span><br><span class="line">        &#125;,0);</span><br><span class="line">        async1();</span><br><span class="line">        new Promise(function (resolve) &#123;</span><br><span class="line">            console.log(&quot;promise1&quot;);</span><br><span class="line">            resolve();</span><br><span class="line">        &#125;).then(function () &#123;</span><br><span class="line">            console.log(&quot;promise2&quot;);</span><br><span class="line">        &#125;);</span><br><span class="line">        console.log(&#x27;script end&#x27;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">script start</span><br><span class="line">async1 start</span><br><span class="line">async2</span><br><span class="line">promise1</span><br><span class="line">script end</span><br><span class="line">promise2</span><br><span class="line">async1 end</span><br><span class="line">settimeout</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://infinityboy.github.io/2019/12/14/js%E4%B8%AD%E7%9A%84setTimeout%E4%B8%8EPromise/" data-id="cli4airjm000edcu1fb8s5qdt" data-title="js中的setTimeout与Promise" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JS/" rel="tag">JS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/12/14/%E7%AE%80%E8%BF%B0JavaScript%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          简述JavaScript设计模式
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/08/03/css-%E6%B0%B4%E5%B9%B3%E5%9E%82%E7%9B%B4%E5%B1%85%E4%B8%AD/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">css 水平垂直居中</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Mac/">Mac</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/">科学上网</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mapbox/" rel="tag">mapbox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webGis/" rel="tag">webGis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%AE%89%E5%85%A8/" rel="tag">web安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" rel="tag">杂七杂八</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JS/" style="font-size: 17.5px;">JS</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/Nginx/" style="font-size: 20px;">Nginx</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/mapbox/" style="font-size: 10px;">mapbox</a> <a href="/tags/vue/" style="font-size: 12.5px;">vue</a> <a href="/tags/webGis/" style="font-size: 10px;">webGis</a> <a href="/tags/web%E5%AE%89%E5%85%A8/" style="font-size: 12.5px;">web安全</a> <a href="/tags/%E5%8D%8F%E8%AE%AE/" style="font-size: 10px;">协议</a> <a href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" style="font-size: 17.5px;">杂七杂八</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 10px;">浏览器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/05/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">计算机网络基础</a>
+          </li>
+        
+          <li>
+            <a href="/2023/05/26/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/05/VUE-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/">VUE 移动端适配方案</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/ES6%E6%8A%80%E5%B7%A7/">ES6技巧</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Hakuna Matata<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

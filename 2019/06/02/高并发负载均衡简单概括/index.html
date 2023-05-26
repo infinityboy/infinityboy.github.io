@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>高并发负载均衡简单概括 | 太玄经</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="本篇博客仅以个人学习记录使用  高并发从何而来？？高并发顾名词义就是更高的并发量，并发量也就是同一时间最大的访问量。在网站初期阶段是不存在高并发问题的，随着使用的人数越来越多，同时访问的人数越来越多，系统流量的不断扩大，高并发的问题也就随之而来。 通常高并发的解决方案比较常见的一种简单低成本的解决方式就是采用负载均衡技术降低单一服务器的访问压力，在此基础之上可以通过垂直扩展或者水平扩展的方式进一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高并发负载均衡简单概括">
+<meta property="og:url" content="https://infinityboy.github.io/2019/06/02/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/index.html">
+<meta property="og:site_name" content="太玄经">
+<meta property="og:description" content="本篇博客仅以个人学习记录使用  高并发从何而来？？高并发顾名词义就是更高的并发量，并发量也就是同一时间最大的访问量。在网站初期阶段是不存在高并发问题的，随着使用的人数越来越多，同时访问的人数越来越多，系统流量的不断扩大，高并发的问题也就随之而来。 通常高并发的解决方案比较常见的一种简单低成本的解决方式就是采用负载均衡技术降低单一服务器的访问压力，在此基础之上可以通过垂直扩展或者水平扩展的方式进一">
+<meta property="og:locale">
+<meta property="og:image" content="https://infinityboy.github.io/images/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/1.png">
+<meta property="og:image" content="https://infinityboy.github.io/images/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/2.png">
+<meta property="og:image" content="https://infinityboy.github.io/images/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/3.png">
+<meta property="og:image" content="https://infinityboy.github.io/images/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/5.png">
+<meta property="og:image" content="https://infinityboy.github.io/images/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/4.png">
+<meta property="og:image" content="https://infinityboy.github.io/images/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/6.png">
+<meta property="og:image" content="https://infinityboy.github.io/images/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/7.png">
+<meta property="article:published_time" content="2019-06-02T11:00:16.000Z">
+<meta property="article:modified_time" content="2023-05-26T07:41:17.213Z">
+<meta property="article:author" content="Hakuna Matata">
+<meta property="article:tag" content="Nginx">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://infinityboy.github.io/images/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="太玄经" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.0.0-rc1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">太玄经</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://infinityboy.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-高并发负载均衡简单概括" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/06/02/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/" class="article-date">
+  <time class="dt-published" datetime="2019-06-02T11:00:16.000Z" itemprop="datePublished">2019-06-02</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      高并发负载均衡简单概括
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>本篇博客仅以个人学习记录使用</p>
+</blockquote>
+<h3 id="高并发从何而来？？"><a href="#高并发从何而来？？" class="headerlink" title="高并发从何而来？？"></a>高并发从何而来？？</h3><p>高并发顾名词义就是更高的并发量，并发量也就是同一时间最大的访问量。在网站初期阶段是不存在高并发问题的，随着使用的人数越来越多，同时访问的人数越来越多，系统流量的不断扩大，高并发的问题也就随之而来。</p>
+<h3 id="通常高并发的解决方案"><a href="#通常高并发的解决方案" class="headerlink" title="通常高并发的解决方案"></a>通常高并发的解决方案</h3><p>比较常见的一种简单低成本的解决方式就是采用负载均衡技术降低单一服务器的访问压力，在此基础之上可以通过垂直扩展或者水平扩展的方式进一步提高吞吐量，增强访问能力。</p>
+<h3 id="垂直扩展"><a href="#垂直扩展" class="headerlink" title="垂直扩展"></a>垂直扩展</h3><p>垂直扩展也就是增加我们硬件的配置，就好像是我们给自己的电脑增加内存更换cpu和显卡的方式来让我们自己的电脑性能更高</p>
+<p><img src="/images/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/1.png"></p>
+<p>硬件上的提升遵循着摩尔定律,当价格不变时，集成电路上可容乃的元器件的数目，约每隔18-24个月便会增加一倍，性能也将提升一倍。换言之，同样的钱所能买到的电脑性能，将每隔18-24个月翻一倍以上。但是摩尔定律已经放缓，这也就更加意味着，单机扩展性能提高是有限的，且成本会越来越高。</p>
+<h3 id="水平扩展"><a href="#水平扩展" class="headerlink" title="水平扩展"></a>水平扩展</h3><p>目前在高并发可用的系统架构中，最优的方案还是水平扩展。理论上，在系统能支持水平扩展的前提下，增加服务器数量，部署更多机器集群，能够带来无限的性能提升。那么，如何将网络请求分布给多个机器去处理呢？</p>
+<h3 id="负载均衡"><a href="#负载均衡" class="headerlink" title="负载均衡"></a>负载均衡</h3><p>低成本且高效的方式就是通过负载均衡技术将网络请求分布给多个机器去处理。</p>
+<p>nginx 一般能够做到10万并发，常用调优手法：<br>nginx 参数：<br>进程与CPU绑定worker_cpu_affinity、并发连接数、缓存区、超时时间、压缩、日志</p>
+<p>操作系统网络参数：<br>能打开的最大文件数、net.ipv4.tcp_keepalive_time、tcp缓冲区&#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;tcp_mem、rmem、wmem</p>
+<p>nginx通常用在Http反向代理的场景中，在网络模型中，HTTP属于第7层应用层的协议。HTTP请求的处理包括解析和封装HTTP内容，要处理更多的请求，需要更多的内存、CPU等等资源。高配置的硬件都比较昂贵，那么在囊中羞涩的情况下，通常会组成Nginx集群来获取更高的处理能力。</p>
+<p>如果面临几十万的并发量，采用Nginx集群：</p>
+<p><img src="/images/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/2.png"></p>
+<p>看了上图会发现，中间的？？？是什么鬼，我们到底用的什么将请求分发给Nginx集群中的多个机器？？？</p>
+<p>答案是，我们用负载均衡器(LVS)去分发请求，那么LVS又是什么呢？</p>
+<p>LVS(Linux Virtual Server), Linux虚拟服务器(重点：这个是中国人开发的)，目前绝大部分Linux发行版，都集成到内核了。实现基于第四层(传输层)的软件负载均衡方案。我们可以粗略认为安装使用了LVS的Linux服务器，相当于是快递中转。</p>
+<p>核心理念：原本是请求LVS服务器的数据包，被LVS软件篡改了数据包的目的地，将流量转移到了Nginx所在的机器IP，从而实现负载均衡。</p>
+<p><img src="/images/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/3.png"></p>
+<p>虽然我们有了LVS这一大神器，但是如上图所示LVS的数量也是有上限的，通常也就是图中所示，五个LVS(可能是不谋而合了)。那么LVS有上限了，就没有别的办法了么？当然不是，别忘了我们还有F5的存在(只要钱到位没有什么是解决不了的)</p>
+<p><img src="/images/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/5.png"></p>
+<p><img src="/images/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/4.png"></p>
+<p><img src="/images/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/6.png"></p>
+<p>但是纵使是有F5在撑腰，服务端也终有上限。<br>Nginx 可以支持1w-10w并发<br>LVS 可以支持10w-50w并发<br>F5 可以支持200w-1000w并发</p>
+<p>当超过服务器架构设备的上限后，如何实现无限水平扩展？</p>
+<p>DNS - 无限水平扩展的终极奥秘</p>
+<p><img src="/images/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/7.png"></p>
+<p>使用由服务商提供的域名解析功能。同一个域名对应多个IP，每个ip给他来一台F5,每台F5来一组LVS集群，每个LVS再分发给一组nginx服务器</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://infinityboy.github.io/2019/06/02/%E9%AB%98%E5%B9%B6%E5%8F%91%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%80%E5%8D%95%E6%A6%82%E6%8B%AC/" data-id="cli4airk00024dcu12wy7epp0" data-title="高并发负载均衡简单概括" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/06/03/Linux%E4%B8%8B%E5%B8%B8%E7%94%A8%E5%8E%8B%E7%BC%A9%E8%A7%A3%E5%8E%8B%E5%91%BD%E4%BB%A4%E5%92%8C%E5%8E%8B%E7%BC%A9%E7%8E%87%E5%AF%B9%E6%AF%94/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          Linux下常用压缩解压命令和压缩率对比
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/06/01/vue-%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">vue 权限管理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Mac/">Mac</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%90%8E%E7%AB%AF/">后端</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/">科学上网</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA/">计算机</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JS/" rel="tag">JS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nginx/" rel="tag">Nginx</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mapbox/" rel="tag">mapbox</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vue/" rel="tag">vue</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webGis/" rel="tag">webGis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web%E5%AE%89%E5%85%A8/" rel="tag">web安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%8F%E8%AE%AE/" rel="tag">协议</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" rel="tag">杂七杂八</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" rel="tag">浏览器</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JS/" style="font-size: 17.5px;">JS</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/Nginx/" style="font-size: 20px;">Nginx</a> <a href="/tags/css/" style="font-size: 10px;">css</a> <a href="/tags/mapbox/" style="font-size: 10px;">mapbox</a> <a href="/tags/vue/" style="font-size: 12.5px;">vue</a> <a href="/tags/webGis/" style="font-size: 10px;">webGis</a> <a href="/tags/web%E5%AE%89%E5%85%A8/" style="font-size: 12.5px;">web安全</a> <a href="/tags/%E5%8D%8F%E8%AE%AE/" style="font-size: 10px;">协议</a> <a href="/tags/%E6%9D%82%E4%B8%83%E6%9D%82%E5%85%AB/" style="font-size: 17.5px;">杂七杂八</a> <a href="/tags/%E6%B5%8F%E8%A7%88%E5%99%A8/" style="font-size: 10px;">浏览器</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">August 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/05/26/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80/">计算机网络基础</a>
+          </li>
+        
+          <li>
+            <a href="/2023/05/26/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/02/05/VUE-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D%E6%96%B9%E6%A1%88/">VUE 移动端适配方案</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/ES6%E6%8A%80%E5%B7%A7/">ES6技巧</a>
+          </li>
+        
+          <li>
+            <a href="/2019/12/14/%E5%87%BD%E6%95%B0%E5%BC%8F%E7%BC%96%E7%A8%8B/">函数式编程</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 Hakuna Matata<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
