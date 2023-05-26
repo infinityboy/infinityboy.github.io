@@ -3,7 +3,7 @@ title: VUE 移动端适配方案
 date: 2020-02-05 15:08:52
 tags: vue
 categories:
-  - web前端
+  - 前端
 ---
 
 > 本篇博客仅以个人学习记录使用

@@ -3,7 +3,7 @@ title: mapbox 离线
 date: 2019-08-03 10:19:35
 tags: mapbox
 categories: 
-- web前端
+- 前端
 ---
 
 >本篇博客仅以个人学习记录使用

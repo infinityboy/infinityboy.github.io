@@ -1,9 +1,9 @@
 ---
 title: WebGis开发基础
 date: 2019-06-03 21:22:27
-tags: webgis
+tags: webGis
 categories: 
-- webGis
+- 前端
 ---
 
 

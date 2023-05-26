@@ -3,7 +3,7 @@ title: vue 权限管理
 date: 2019-06-01 21:21:55
 tags: vue
 categories: 
-- web前端
+- 前端
 ---
 
 >本篇博客仅以个人学习记录使用

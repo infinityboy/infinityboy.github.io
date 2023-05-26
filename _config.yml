@@ -13,7 +13,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: https://infinityboy.github.io/
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -73,12 +73,20 @@ pagination_dir: page
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: next
+# Header
+menu:
+  Home: /
+  Archives: /archives
+banner: images/banner.jpg
+# Sidebar
+sidebar: right
+widgets:
+- category
+- tag
+- tagcloud
+- archive
+- recent_posts
 
-# Deployment
-## Docs: https://hexo.io/docs/deployment.html
-# deploy:
-#   type:
 deploy:
   type: git
   repository: https://github.com/infinityboy/infinityboy.github.io
