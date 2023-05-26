@@ -82,10 +82,8 @@ banner: images/banner.jpg
 sidebar: right
 widgets:
 - category
-- tag
 - tagcloud
 - archive
-- recent_posts
 
 deploy:
   type: git
